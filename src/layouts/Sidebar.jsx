@@ -86,7 +86,7 @@ export default function Sidebar({
 
                   ${
                     darkMode
-                      ? 'bg-zinc-800 text-zinc-500'
+                      ? 'bg-[#111c31] text-zinc-500'
                       : 'bg-zinc-100 text-zinc-500'
                   }
                 `}
@@ -121,8 +121,8 @@ export default function Sidebar({
                 ${
                   darkMode
                     ? `
-                      bg-zinc-800
-                      border-zinc-700
+                      bg-[#111c31]
+                      border-white/5
                     `
                     : `
                       bg-zinc-50
@@ -179,8 +179,8 @@ export default function Sidebar({
                 ${
                   darkMode
                     ? `
-                      bg-zinc-800
-                      border-zinc-700
+                      bg-[#111c31]
+                      border-white/5
                     `
                     : `
                       bg-zinc-50
@@ -238,8 +238,8 @@ export default function Sidebar({
                 ${
                   darkMode
                     ? `
-                      bg-zinc-800
-                      border-zinc-700
+                      bg-[#111c31]
+                      border-white/5
                     `
                     : `
                       bg-zinc-50

@@ -78,17 +78,59 @@ export default function App() {
   return (
     <div
       className={`
-        min-h-screen
-        transition-all
-        duration-300
+  min-h-screen
+  transition-all
+  duration-300
+  relative
+  overflow-hidden
 
-        ${
-          darkMode
-            ? 'bg-[#020617]'
-            : 'bg-[#dbe4f0]'
-        }
-      `}
+  ${
+    darkMode
+      ? `
+        bg-[#020617]
+        text-white
+      `
+      : `
+        bg-[#dbe4f0]
+        text-black
+      `
+  }
+`}
+
     >
+      {/* BACKGROUND LIGHTING */}
+
+      {darkMode && (
+        <>
+          <div
+            className="
+              fixed
+              top-[-200px]
+              right-[-200px]
+              w-[600px]
+              h-[600px]
+              rounded-full
+              bg-blue-500/10
+              blur-3xl
+              pointer-events-none
+            "
+          />
+
+          <div
+            className="
+              fixed
+              bottom-[-200px]
+              left-[-200px]
+              w-[500px]
+              h-[500px]
+              rounded-full
+              bg-purple-500/10
+              blur-3xl
+              pointer-events-none
+            "
+          />
+        </>
+      )}
       {/* =========================
           EDIT BUTTON
       ========================= */}

@@ -65,25 +65,29 @@ export default function EditorPanel({
 <button
   onClick={() => {
     localStorage.removeItem(
-      'cvData'
+      'cv-data'
     )
 
     window.location.reload()
   }}
   className="
     w-full
-    mb-8
-    p-3
+    px-4
+    py-3
     rounded-2xl
     bg-red-500
     text-white
     font-semibold
-    hover:bg-red-600
     transition-all
+    duration-300
+
+    hover:bg-red-600
+    hover:-translate-y-1
+    hover:shadow-xl
   "
->
-  Reset CV Data
-</button>
+>Reset CV Data
+</button> 
+
 <div className="grid grid-cols-2 gap-4 mb-8">
   {/* EXPORT JSON */}
 
@@ -125,10 +129,8 @@ export default function EditorPanel({
       hover:bg-blue-700
       transition-all
     "
-  >
-    Export JSON
-  </button>
-
+  >Export JSON
+  </button> 
   {/* IMPORT JSON */}
 
   <label
@@ -146,7 +148,7 @@ export default function EditorPanel({
   >
     Import JSON
 
-    <input
+    <input  
       type="file"
       accept=".json"
       hidden
@@ -295,7 +297,7 @@ export default function EditorPanel({
     Photo Horizontal Position
   </label>
 
-  <input
+  <input  
     type="range"
     min="0"
     max="100"

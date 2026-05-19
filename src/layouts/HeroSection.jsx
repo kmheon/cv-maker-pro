@@ -90,8 +90,8 @@ export default function HeroSection({
                 py-3
                 rounded-2xl
                 bg-gradient-to-r
-                from-blue-600
-                to-blue-500
+                from-blue-500
+                to-blue-400
                 text-white
                 font-semibold
                 shadow-xl
@@ -99,7 +99,7 @@ export default function HeroSection({
                 duration-300
 
                 hover:-translate-y-1
-                hover:shadow-blue-500/30
+                hover:shadow-blue-400/40
               "
             >
               <span
@@ -176,7 +176,7 @@ export default function HeroSection({
               w-14
               h-14
               rounded-2xl
-              bg-zinc-950
+              bg-[#111c31]
               text-white
               text-xl
               flex

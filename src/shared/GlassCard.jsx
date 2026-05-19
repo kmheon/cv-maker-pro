@@ -20,9 +20,10 @@ export default function GlassCard({
         ${
           darkMode
             ? `
-              bg-zinc-900/90
-              border-zinc-800
+              bg-[#0f172a]/95
+              border-white/5
               text-white
+              shadow-[0_10px_40px_rgba(0,0,0,0.35)]
             `
             : `
               bg-white
@@ -35,7 +36,7 @@ export default function GlassCard({
           hover
             ? `
               hover:-translate-y-1
-              hover:shadow-2xl
+              hover:shadow-[0_20px_50px_rgba(0,0,0,0.45)]
             `
             : ''
         }
@@ -43,7 +44,7 @@ export default function GlassCard({
         ${className}
       `}
     >
-      {/* GLOW OVERLAY */}
+      {/* PREMIUM DARK GLOW */}
 
       <div
         className="
@@ -54,7 +55,7 @@ export default function GlassCard({
           transition-all
           duration-300
           pointer-events-none
-          bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.10),transparent_45%)]
+          bg-[radial-gradient(circle_at_top_right,rgba(96,165,250,0.16),transparent_45%)]
         "
       />
 
