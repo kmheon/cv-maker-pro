@@ -1,90 +1,46 @@
-import GlassCard from '../shared/GlassCard'
-
 export default function SkillCard({
   name,
 
   level,
 
-  description,
-
   icon,
 
-  color = 'blue',
+  description,
 
   darkMode = false,
 }) {
-  /* =========================
-     COLOR SYSTEM
-  ========================= */
-
-  const colorStyles = {
-    blue: {
-      icon: `
-        bg-gradient-to-br
-        from-blue-600
-        to-blue-400
-      `,
-
-      glow: `
-        from-blue-400
-        to-blue-600
-      `,
-    },
-
-    emerald: {
-      icon: `
-        bg-gradient-to-br
-        from-emerald-600
-        to-emerald-400
-      `,
-
-      glow: `
-        from-emerald-400
-        to-emerald-600
-      `,
-    },
-
-    purple: {
-      icon: `
-        bg-gradient-to-br
-        from-purple-600
-        to-purple-400
-      `,
-
-      glow: `
-        from-purple-400
-        to-purple-600
-      `,
-    },
-
-    orange: {
-      icon: `
-        bg-gradient-to-br
-        from-orange-600
-        to-orange-400
-      `,
-
-      glow: `
-        from-orange-400
-        to-orange-600
-      `,
-    },
-  }
-
-  const current =
-    colorStyles[color] ||
-    colorStyles.blue
-
   return (
-    <GlassCard
-      darkMode={darkMode}
-      className="
-        p-4
+    <div
+      className={`
         relative
+        overflow-hidden
+        rounded-[28px]
+        border
+        transition-all
+        duration-300
+        p-5
         group
-      "
+
+        ${
+          darkMode
+            ? `
+              bg-[#111c31]
+              border-white/5
+              text-white
+              shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+            `
+            : `
+              bg-white
+              border-zinc-100
+              text-black
+            `
+        }
+
+        hover:-translate-y-1
+        hover:shadow-[0_20px_50px_rgba(0,0,0,0.45)]
+      `}
     >
-      {/* HOVER OVERLAY */}
+      {/* PREMIUM HOVER GLOW */}
 
       <div
         className="
@@ -95,106 +51,164 @@ export default function SkillCard({
           transition-all
           duration-300
           pointer-events-none
-          bg-gradient-to-br
-          from-white/5
-          to-transparent
+          bg-[radial-gradient(circle_at_top_right,rgba(96,165,250,0.16),transparent_45%)]
         "
       />
 
       {/* CONTENT */}
 
-      <div
-        className="
-          relative
-          z-10
-          flex
-          items-center
-          gap-4
-        "
-      >
-        {/* ICON */}
+      <div className="relative z-10">
+        {/* HEADER */}
+
+        <div
+          className="
+            flex
+            items-start
+            justify-between
+            gap-4
+            mb-4
+          "
+        >
+          {/* LEFT */}
+
+          <div
+            className="
+              flex
+              items-center
+              gap-3
+            "
+          >
+            {/* ICON */}
+
+            {icon && (
+              <div
+                className="
+                  text-2xl
+                "
+              >
+                {icon}
+              </div>
+            )}
+
+            {/* TEXT */}
+
+            <div>
+              <h3
+                className={`
+                  text-lg
+                  font-bold
+
+                  ${
+                    darkMode
+                      ? 'text-white'
+                      : 'text-zinc-900'
+                  }
+                `}
+              >
+                {name}
+              </h3>
+
+              {/* DESCRIPTION */}
+
+              {description && (
+                <p
+                  className={`
+                    text-sm
+                    mt-1
+                    leading-6
+
+                    ${
+                      darkMode
+                        ? 'text-zinc-300'
+                        : 'text-zinc-500'
+                    }
+                  `}
+                >
+                  {description}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* LEVEL */}
+
+          <div
+            className={`
+              px-3
+              py-1
+              rounded-full
+              text-xs
+              font-bold
+              whitespace-nowrap
+
+              ${
+                darkMode
+                  ? `
+                    bg-blue-500/15
+                    text-blue-300
+                  `
+                  : `
+                    bg-blue-50
+                    text-blue-700
+                  `
+              }
+            `}
+          >
+            {level}%
+          </div>
+        </div>
+
+        {/* PROGRESS BAR */}
 
         <div
           className={`
-            w-14
-            h-14
-            rounded-2xl
-            flex
-            items-center
-            justify-center
-            text-2xl
-            shadow-xl
-            shrink-0
+            relative
+            h-3
+            rounded-full
+            overflow-hidden
 
-            ${current.icon}
+            ${
+              darkMode
+                ? 'bg-[#0b1220]'
+                : 'bg-zinc-200'
+            }
           `}
         >
-          {icon}
-        </div>
+          {/* GLOW */}
 
-        {/* TEXT */}
+          <div
+            className="
+              absolute
+              inset-y-0
+              left-0
+              opacity-40
+              blur-md
+              bg-blue-400
+            "
+            style={{
+              width: `${level}%`,
+            }}
+          />
 
-        <div className="flex-1">
-          <h3
-            className={`
-              text-sm
-              font-bold
-              mb-1
+          {/* BAR */}
 
-              ${
-                darkMode
-                  ? 'text-white'
-                  : 'text-zinc-900'
-              }
-            `}
-          >
-            {name}
-          </h3>
-
-          <p
-            className={`
-              text-xs
-              leading-5
-
-              ${
-                darkMode
-                  ? 'text-zinc-400'
-                  : 'text-zinc-500'
-              }
-            `}
-          >
-            {description}
-          </p>
+          <div
+            className="
+              relative
+              h-full
+              rounded-full
+              bg-gradient-to-r
+              from-blue-500
+              to-blue-400
+              transition-all
+              duration-700
+            "
+            style={{
+              width: `${level}%`,
+            }}
+          />
         </div>
       </div>
-
-      {/* GLOW BAR */}
-
-      <div
-        className="
-          absolute
-          left-0
-          bottom-0
-          h-1
-          rounded-full
-          transition-all
-          duration-500
-        "
-        style={{
-          width: `${level}%`,
-        }}
-      >
-        <div
-          className={`
-            h-full
-            rounded-full
-            bg-gradient-to-r
-            shadow-lg
-
-            ${current.glow}
-          `}
-        />
-      </div>
-    </GlassCard>
+    </div>
   )
 }
