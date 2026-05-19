@@ -2,10 +2,10 @@ import GlassCard from '../shared/GlassCard'
 import {
   exportPdf,
 } from '../utils/exportPdf'
+
 export default function EditorPanel({
   cvData,
   setCvData,
-
   selectedTemplate,
   setSelectedTemplate,
 }) {
@@ -13,10 +13,8 @@ export default function EditorPanel({
     (field, value) => {
       setCvData({
         ...cvData,
-
         personal: {
           ...cvData.personal,
-
           [field]: value,
         },
       })
@@ -32,6 +30,9 @@ export default function EditorPanel({
         overflow-y-auto
       "
     >
+      {/* CONTAINER */}
+      
+      {/* CARD */}
       <GlassCard
         className="
           p-6
@@ -40,7 +41,6 @@ export default function EditorPanel({
         hover={false}
       >
         {/* HEADER */}
-
         <div className="mb-8">
           <h2
             className="
@@ -62,377 +62,377 @@ export default function EditorPanel({
           </p>
         </div>
         
-<button
-  onClick={() => {
-    localStorage.removeItem(
-      'cv-data'
-    )
-
-    window.location.reload()
-  }}
-  className="
-    w-full
-    px-4
-    py-3
-    rounded-2xl
-    bg-red-500
-    text-white
-    font-semibold
-    transition-all
-    duration-300
-
-    hover:bg-red-600
-    hover:-translate-y-1
-    hover:shadow-xl
-  "
->Reset CV Data
-</button> 
-
-<div className="grid grid-cols-2 gap-4 mb-8">
-  {/* EXPORT JSON */}
-
-  <button
-    onClick={() => {
-      const dataStr =
-        JSON.stringify(
-          cvData,
-          null,
-          2
-        )
-
-      const blob =
-        new Blob([dataStr], {
-          type: 'application/json',
-        })
-
-      const url =
-        URL.createObjectURL(blob)
-
-      const link =
-        document.createElement('a')
-
-      link.href = url
-
-      link.download =
-        'cv-data.json'
-
-      link.click()
-
-      URL.revokeObjectURL(url)
-    }}
-    className="
-      p-3
-      rounded-2xl
-      bg-blue-600
-      text-white
-      font-semibold
-      hover:bg-blue-700
-      transition-all
-    "
-  >Export JSON
-  </button> 
-  {/* IMPORT JSON */}
-
-  <label
-    className="
-      p-3
-      rounded-2xl
-      bg-zinc-900
-      text-white
-      font-semibold
-      text-center
-      cursor-pointer
-      hover:bg-black
-      transition-all
-    "
-  >
-    Import JSON
-
-    <input  
-      type="file"
-      accept=".json"
-      hidden
-      onChange={(e) => {
-        const file =
-          e.target.files[0]
-
-        if (!file) return
-
-        const reader =
-          new FileReader()
-
-        reader.onload = (
-          event
-        ) => {
-          try {
-            const importedData =
-              JSON.parse(
-                event.target.result
+        {/* RESET */}
+        <div className="mb-6">
+          <button
+            onClick={() => {
+              localStorage.removeItem(
+                'cv-data'
               )
+              window.location.reload()
+            }}
+            className="
+              w-full
+              px-4
+              py-3
+              rounded-2xl
+              bg-red-500
+              text-white
+              font-semibold
+              transition-all
+              duration-300
+              hover:bg-red-600
+              hover:-translate-y-1
+              hover:shadow-xl
+            "
+          >
+            Reset CV Data
+          </button> 
+        </div>
 
-            setCvData(
-              importedData
-            )
-          } catch (error) {
-            alert(
-              'Invalid JSON file'
-            )
-          }
-        }
+        {/* ACTIONS */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
+          {/* EXPORT */}
+          <button
+            onClick={() => {
+              const dataStr =
+                JSON.stringify(
+                  cvData,
+                  null,
+                  2
+                )
 
-        reader.readAsText(file)
-      }}
-    />
-  </label>
-</div>
-{/* TEMPLATE SELECTOR */}
+              const blob =
+                new Blob([dataStr], {
+                  type: 'application/json',
+                })
 
-<div className="mb-8">
-  <label
-    className="
-      block
-      mb-2
-      text-sm
-      font-semibold
-      text-zinc-700
-    "
-  >
-    Template
-  </label>
+              const url =
+                URL.createObjectURL(blob)
 
-  <select
-    value={selectedTemplate}
-    onChange={(e) =>
-      setSelectedTemplate(
-        e.target.value
-      )
-    }
-    className="
-      w-full
-      p-4
-      rounded-2xl
-      border
-      border-zinc-200
-      bg-white
-      text-zinc-900
-      outline-none
-    "
-  >
-    <option value="modernGlass">
-      Modern Glass
-    </option>
-  </select>
-</div>
-        {/* PERSONAL INFO */}
+              const link =
+                document.createElement('a')
 
+              link.href = url
+
+              link.download =
+                'cv-data.json'
+
+              link.click()
+
+              URL.revokeObjectURL(url)
+            }}
+            className="
+              p-3
+              rounded-2xl
+              bg-blue-600
+              text-white
+              font-semibold
+              hover:bg-blue-700
+              transition-all
+            "
+          >
+            Export JSON
+          </button> 
+
+          {/* IMPORT */}
+          <label
+            className="
+              p-3
+              rounded-2xl
+              bg-zinc-900
+              text-white
+              font-semibold
+              text-center
+              cursor-pointer
+              hover:bg-black
+              transition-all
+            "
+          >
+            Import JSON
+
+            <input  
+              type="file"
+              accept=".json"
+              hidden
+              onChange={(e) => {
+                const file =
+                  e.target.files[0]
+
+                if (!file) return
+
+                const reader =
+                  new FileReader()
+
+                reader.onload = (
+                  event
+                ) => {
+                  try {
+                    const importedData =
+                      JSON.parse(
+                        event.target.result
+                      )
+
+                    setCvData(
+                      importedData
+                    )
+                  } catch (error) {
+                    alert(
+                      'Incorrect JSON format'
+                    )
+                  }
+                }
+
+                reader.readAsText(file)
+              }}
+            />
+          </label>
+        </div>
+
+        {/* TEMPLATE */}
+        <div className="mb-8">
+          <label
+            className="
+              block
+              mb-2
+              text-sm
+              font-semibold
+              text-zinc-700
+            "
+          >
+            Template
+          </label>
+
+          <select
+            value={selectedTemplate}
+            onChange={(e) =>
+              setSelectedTemplate(
+                e.target.value
+              )
+            }
+            className="
+              w-full
+              p-4
+              rounded-2xl
+              border
+              border-zinc-200
+              bg-white
+              text-zinc-900
+              outline-none
+            "
+          >
+            <option value="modernGlass">
+              Modern Glass
+            </option>
+          </select>
+        </div>
+
+        {/* PERSONAL */}
         <div className="space-y-5">
+          
+          {/* PHOTO */}
           <div>
-  <label
-    className="
-      block
-      mb-2
-      text-sm
-      font-semibold
-      text-zinc-700
-    "
-  >
-    Profile Photo
-  </label>
+            <label
+              className="
+                block
+                mb-2
+                text-sm
+                font-semibold
+                text-zinc-700
+              "
+            >
+              Profile Photo
+            </label>
 
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      const file =
-        e.target.files[0]
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file =
+                  e.target.files[0]
 
-      if (!file) return
+                if (!file) return
 
-      const imageUrl =
-        URL.createObjectURL(file)
+                const imageUrl =
+                  URL.createObjectURL(file)
 
-      setCvData({
-        ...cvData,
+                setCvData({
+                  ...cvData,
+                  personal: {
+                    ...cvData.personal,
+                    photo: imageUrl,
+                  },
+                })
+              }}
+              className="
+                w-full
+                p-3
+                rounded-xl
+                border
+                border-zinc-200
+                bg-white
+              "
+            />
+            <p
+              className="
+                mt-2
+                text-xs
+                text-zinc-500
+                leading-6
+              "
+            >
+              Recommended: square image, centered face, high quality portrait.
+            </p>
+          </div>
 
-        personal: {
-          ...cvData.personal,
+          {/* ALIGNMENT-X */}
+          <div>
+            <label
+              className="
+                block
+                mb-2
+                text-sm
+                font-semibold
+                text-zinc-700
+              "
+            >
+              Photo Horizontal Position
+            </label>
 
-          photo: imageUrl,
-        },
-      })
-    }}
-    className="
-      w-full
-      p-3
-      rounded-xl
-      border
-      border-zinc-200
-      bg-white
-    "
-  />
-  <p
-  className="
-    mt-2
-    text-xs
-    text-zinc-500
-    leading-6
-  "
->
-  Recommended:
-  square image,
-  centered face,
-  high quality portrait.
-</p>
-</div>
-<div>
-  <label
-    className="
-      block
-      mb-2
-      text-sm
-      font-semibold
-      text-zinc-700
-    "
-  >
-    Photo Horizontal Position
-  </label>
+            <input  
+              type="range"
+              min="0"
+              max="100"
+              value={
+                cvData.personal.photoPositionX
+              }
+              onChange={(e) => {
+                setCvData({
+                  ...cvData,
+                  personal: {
+                    ...cvData.personal,
+                    photoPositionX:
+                      Number(e.target.value),
+                  },
+                })
+              }}
+              className="w-full"
+            />
+          </div>
 
-  <input  
-    type="range"
-    min="0"
-    max="100"
-    value={
-      cvData.personal.photoPositionX
-    }
-    onChange={(e) => {
-      setCvData({
-        ...cvData,
+          {/* ALIGNMENT-Y */}
+          <div>
+            <label
+              className="
+                block
+                mb-2
+                text-sm
+                font-semibold
+                text-zinc-700
+              "
+            >
+              Photo Vertical Position
+            </label>
 
-        personal: {
-          ...cvData.personal,
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={
+                cvData.personal.photoPositionY
+              }
+              onChange={(e) => {
+                setCvData({
+                  ...cvData,
+                  personal: {
+                    ...cvData.personal,
+                    photoPositionY:
+                      Number(e.target.value),
+                  },
+                })
+              }}
+              className="w-full"
+            />
+          </div>
 
-          photoPositionX:
-            Number(e.target.value),
-        },
-      })
-    }}
-    className="w-full"
-  />
-</div>
+          {/* CENTER-BUTTON */}
+          <button
+            onClick={() => {
+              setCvData({
+                ...cvData,
+                personal: {
+                  ...cvData.personal,
+                  photoPositionX: 50,
+                  photoPositionY: 50,
+                },
+              })
+            }}
+            className="
+              w-full
+              mt-4
+              p-3
+              rounded-2xl
+              bg-zinc-900
+              text-white
+              font-semibold
+              hover:bg-black
+              transition-all
+            "
+          >
+            Center Image
+          </button>
 
-<div>
-  <label
-    className="
-      block
-      mb-2
-      text-sm
-      font-semibold
-      text-zinc-700
-    "
-  >
-    Photo Vertical Position
-  </label>
+          {/* POSITION-SELECTOR */}
+          <div>
+            <label
+              className="
+                block
+                mb-2
+                text-sm
+                font-semibold
+                text-zinc-700
+              "
+            >
+              Photo Vertical Position
+            </label>
 
-  <input
-    type="range"
-    min="0"
-    max="100"
-    value={
-      cvData.personal.photoPositionY
-    }
-    onChange={(e) => {
-      setCvData({
-        ...cvData,
+            <select
+              value={
+                cvData.personal.photoPositionY
+              }
+              onChange={(e) => {
+                setCvData({
+                  ...cvData,
+                  personal: {
+                    ...cvData.personal,
+                    photoPositionY:
+                      e.target.value,
+                  },
+                })
+              }}
+              className="
+                w-full
+                p-3
+                rounded-xl
+                border
+                border-zinc-200
+              "
+            >
+              <option value="top">
+                Top
+              </option>
 
-        personal: {
-          ...cvData.personal,
+              <option value="center">
+                Center
+              </option>
 
-          photoPositionY:
-            Number(e.target.value),
-        },
-      })
-    }}
-    className="w-full"
-  />
-</div>
-<button
-  onClick={() => {
-    setCvData({
-      ...cvData,
+              <option value="bottom">
+                Bottom
+              </option>
+            </select>
+          </div>
 
-      personal: {
-        ...cvData.personal,
-
-        photoPositionX: 50,
-
-        photoPositionY: 50,
-      },
-    })
-  }}
-  className="
-    w-full
-    mt-4
-    p-3
-    rounded-2xl
-    bg-zinc-900
-    text-white
-    font-semibold
-    hover:bg-black
-    transition-all
-  "
->
-  Center Image
-</button>
-<div>
-  <label
-    className="
-      block
-      mb-2
-      text-sm
-      font-semibold
-      text-zinc-700
-    "
-  >
-    Photo Vertical Position
-  </label>
-
-  <select
-    value={
-      cvData.personal.photoPositionY
-    }
-    onChange={(e) => {
-      setCvData({
-        ...cvData,
-
-        personal: {
-          ...cvData.personal,
-
-          photoPositionY:
-            e.target.value,
-        },
-      })
-    }}
-    className="
-      w-full
-      p-3
-      rounded-xl
-      border
-      border-zinc-200
-    "
-  >
-    <option value="top">
-      Top
-    </option>
-
-    <option value="center">
-      Center
-    </option>
-
-    <option value="bottom">
-      Bottom
-    </option>
-  </select>
-</div>
+          {/* NAME */}
           <div>
             <label
               className="
@@ -465,6 +465,7 @@ export default function EditorPanel({
             />
           </div>
 
+          {/* TITLE */}
           <div>
             <label
               className="
@@ -497,6 +498,7 @@ export default function EditorPanel({
             />
           </div>
 
+          {/* SUMMARY */}
           <div>
             <label
               className="
@@ -531,7 +533,6 @@ export default function EditorPanel({
         </div>
 
         {/* SKILLS */}
-
         <div className="pt-10">
           <div
             className="
@@ -555,18 +556,13 @@ export default function EditorPanel({
               onClick={() => {
                 setCvData({
                   ...cvData,
-
                   skills: [
                     ...cvData.skills,
-
                     {
                       name:
                         'New Skill',
-
                       level: 80,
-
                       icon: '⚡',
-
                       description:
                         'Skill description',
                     },
@@ -713,7 +709,6 @@ export default function EditorPanel({
         </div>
 
         {/* EXPERIENCE */}
-
         <div className="pt-10">
           <div
             className="
@@ -737,23 +732,17 @@ export default function EditorPanel({
               onClick={() => {
                 setCvData({
                   ...cvData,
-
                   experience: [
                     ...cvData.experience,
-
                     {
                       role:
                         'New Role',
-
                       company:
                         'Company Name',
-
                       duration:
                         '2024 – Present',
-
                       description:
                         '',
-
                       tags: [
                         'Skill',
                       ],
@@ -957,7 +946,6 @@ export default function EditorPanel({
         </div>
 
         {/* EDUCATION */}
-
         <div className="pt-10">
           <div
             className="
@@ -981,20 +969,15 @@ export default function EditorPanel({
               onClick={() => {
                 setCvData({
                   ...cvData,
-
                   education: [
                     ...cvData.education,
-
                     {
                       degree:
                         'New Degree',
-
                       institute:
                         'Institute Name',
-
                       duration:
                         '2020 – 2024',
-
                       result:
                         '3.8 GPA',
                     },
@@ -1167,7 +1150,6 @@ export default function EditorPanel({
         </div>
 
         {/* CERTIFICATIONS */}
-
         <div className="pt-10">
           <div
             className="
@@ -1191,10 +1173,8 @@ export default function EditorPanel({
               onClick={() => {
                 setCvData({
                   ...cvData,
-
                   certifications: [
                     ...cvData.certifications,
-
                     {
                       title:
                         'New Certification',
@@ -1288,228 +1268,203 @@ export default function EditorPanel({
             )}
           </div>
         </div>
-         {/* LANGUAGES */}
 
-<div className="mb-10">
-  <div
-    className="
-      flex
-      justify-between
-      items-center
-      mb-4
-    "
-  >
-    <h2
-      className="
-        text-lg
-        font-bold
-      "
-    >
-      Languages
-    </h2>
-
-    <button
-      onClick={() => {
-        setCvData({
-          ...cvData,
-
-          languages: [
-            ...cvData.languages,
-
-            {
-              name: '',
-
-              level: 80,
-
-              levelLabel:
-                'Professional',
-            },
-          ],
-        })
-      }}
-      className="
-        px-4
-        py-2
-        rounded-xl
-        bg-blue-600
-        text-white
-        text-sm
-        font-semibold
-      "
-    >
-      Add Language
-    </button>
-  </div>
-
-  <div className="space-y-4">
-    {cvData.languages.map(
-      (language, index) => (
-        <div
-          key={index}
-          className="
-            border
-            border-zinc-200
-            rounded-2xl
-            p-4
-            space-y-3
-          "
-        >
-          {/* NAME */}
-
-          <input
-            type="text"
-            placeholder="Language"
-
-            value={
-              language.name
-            }
-
-            onChange={(e) => {
-              const updated =
-                [
-                  ...cvData.languages,
-                ]
-
-              updated[
-                index
-              ].name =
-                e.target.value
-
-              setCvData({
-                ...cvData,
-
-                languages:
-                  updated,
-              })
-            }}
-
+        {/* LANGUAGES */}
+        <div className="mb-10 pt-10">
+          <div
             className="
-              w-full
-              p-3
-              rounded-xl
-              border
-              border-zinc-200
-            "
-          />
-
-          {/* LEVEL */}
-
-          <input
-            type="number"
-            min="0"
-            max="100"
-
-            value={
-              language.level
-            }
-
-            onChange={(e) => {
-              const updated =
-                [
-                  ...cvData.languages,
-                ]
-
-              updated[
-                index
-              ].level =
-                Number(
-                  e.target.value
-                )
-
-              setCvData({
-                ...cvData,
-
-                languages:
-                  updated,
-              })
-            }}
-
-            className="
-              w-full
-              p-3
-              rounded-xl
-              border
-              border-zinc-200
-            "
-          />
-
-          {/* LABEL */}
-
-          <input
-            type="text"
-            placeholder="Professional"
-
-            value={
-              language.levelLabel
-            }
-
-            onChange={(e) => {
-              const updated =
-                [
-                  ...cvData.languages,
-                ]
-
-              updated[
-                index
-              ].levelLabel =
-                e.target.value
-
-              setCvData({
-                ...cvData,
-
-                languages:
-                  updated,
-              })
-            }}
-
-            className="
-              w-full
-              p-3
-              rounded-xl
-              border
-              border-zinc-200
-            "
-          />
-
-          {/* REMOVE */}
-
-          <button
-            onClick={() => {
-              const updated =
-                cvData.languages.filter(
-                  (
-                    _,
-                    i
-                  ) =>
-                    i !== index
-                )
-
-              setCvData({
-                ...cvData,
-
-                languages:
-                  updated,
-              })
-            }}
-            className="
-              px-4
-              py-2
-              rounded-xl
-              bg-red-500
-              text-white
-              text-sm
-              font-semibold
+              flex
+              justify-between
+              items-center
+              mb-4
             "
           >
-            Remove
-          </button>
-        </div>
-      )
-    )}
-  </div>
-</div>     
-        {/* REFERENCES */}
+            <h2
+              className="
+                text-lg
+                font-bold
+              "
+            >
+              Languages
+            </h2>
 
+            <button
+              onClick={() => {
+                setCvData({
+                  ...cvData,
+                  languages: [
+                    ...cvData.languages,
+                    {
+                      name: '',
+                      level: 80,
+                      levelLabel:
+                        'Professional',
+                    },
+                  ],
+                })
+              }}
+              className="
+                px-4
+                py-2
+                rounded-xl
+                bg-blue-600
+                text-white
+                text-sm
+                font-semibold
+              "
+            >
+              Add Language
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {cvData.languages.map(
+              (language, index) => (
+                <div
+                  key={index}
+                  className="
+                    border
+                    border-zinc-200
+                    rounded-2xl
+                    p-4
+                    space-y-3
+                  "
+                >
+                  <input
+                    type="text"
+                    placeholder="Language"
+                    value={
+                      language.name
+                    }
+                    onChange={(e) => {
+                      const updated =
+                        [
+                          ...cvData.languages,
+                        ]
+
+                      updated[
+                        index
+                      ].name =
+                        e.target.value
+
+                      setCvData({
+                        ...cvData,
+                        languages:
+                          updated,
+                      })
+                    }}
+                    className="
+                      w-full
+                      p-3
+                      rounded-xl
+                      border
+                      border-zinc-200
+                    "
+                  />
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={
+                      language.level
+                    }
+                    onChange={(e) => {
+                      const updated =
+                        [
+                          ...cvData.languages,
+                        ]
+
+                      updated[
+                        index
+                      ].level =
+                        Number(
+                          e.target.value
+                        )
+
+                      setCvData({
+                        ...cvData,
+                        languages:
+                          updated,
+                      })
+                    }}
+                    className="
+                      w-full
+                      p-3
+                      rounded-xl
+                      border
+                      border-zinc-200
+                    "
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Professional"
+                    value={
+                      language.levelLabel
+                    }
+                    onChange={(e) => {
+                      const updated =
+                        [
+                          ...cvData.languages,
+                        ]
+
+                      updated[
+                        index
+                      ].levelLabel =
+                        e.target.value
+
+                      setCvData({
+                        ...cvData,
+                        languages:
+                          updated,
+                      })
+                    }}
+                    className="
+                      w-full
+                      p-3
+                      rounded-xl
+                      border
+                      border-zinc-200
+                    "
+                  />
+
+                  <button
+                    onClick={() => {
+                      const updated =
+                        cvData.languages.filter(
+                          (
+                            _,
+                            i
+                          ) =>
+                            i !== index
+                        )
+
+                      setCvData({
+                        ...cvData,
+                        languages:
+                          updated,
+                      })
+                    }}
+                    className="
+                      px-4
+                      py-2
+                      rounded-xl
+                      bg-red-500
+                      text-white
+                      text-sm
+                      font-semibold
+                    "
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
+            )}
+          </div>
+        </div>     
+
+        {/* REFERENCES */}
         <div className="pt-10">
           <div
             className="
@@ -1533,20 +1488,15 @@ export default function EditorPanel({
               onClick={() => {
                 setCvData({
                   ...cvData,
-
                   references: [
                     ...cvData.references,
-
                     {
                       name:
                         'Reference Name',
-
                       company:
                         'Company Name',
-
                       phone:
                         '',
-
                       email:
                         '',
                     },
