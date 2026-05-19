@@ -2,21 +2,22 @@ export default function Tag({
   children,
 
   darkMode = false,
-
-  className = '',
 }) {
   return (
-    <span
+    <div
       className={`
-        inline-flex
-        items-center
+        relative
+        overflow-hidden
         px-4
         py-2
         rounded-2xl
-        text-sm
-        font-semibold
+        text-xs
+        font-bold
+        tracking-wide
         transition-all
         duration-300
+        cursor-default
+        select-none
 
         ${
           darkMode
@@ -34,10 +35,33 @@ export default function Tag({
             `
         }
 
-        ${className}
+        hover:-translate-y-1
+        hover:scale-105
+        hover:shadow-lg
       `}
     >
-      {children}
-    </span>
+      {/* GLOW */}
+
+      <div
+        className="
+          absolute
+          inset-0
+          opacity-0
+          hover:opacity-100
+          transition-all
+          duration-300
+          bg-gradient-to-r
+          from-blue-500/10
+          to-purple-500/10
+          pointer-events-none
+        "
+      />
+
+      {/* TEXT */}
+
+      <span className="relative z-10">
+        {children}
+      </span>
+    </div>
   )
 }

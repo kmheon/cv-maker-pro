@@ -1,184 +1,293 @@
-import InfoCard from '../shared/InfoCard'
+import GlassCard from '../shared/GlassCard'
 
 export default function Sidebar({
-  children,
-
   photo,
 
   photoPositionX = 50,
 
   photoPositionY = 50,
 
+  personal,
+
   darkMode = false,
 
-  personal = {},
+  children,
 }) {
   return (
-    <aside
-      className="
-        rounded-[36px]
-        overflow-hidden
-        bg-[#07122b]
-        text-white
-        shadow-[0_10px_40px_rgba(0,0,0,0.25)]
-      "
-    >
-      {/* SIDEBAR CONTENT */}
+    <div className="space-y-6">
+      {/* PROFILE */}
 
-      <div className="p-6">
-        {/* PROFILE */}
+      <GlassCard
+        darkMode={darkMode}
+        className="
+          p-6
+          sticky
+          top-6
+        "
+      >
+        {/* IMAGE */}
 
         <div
           className="
-            flex
-            flex-col
-            items-center
-            text-center
-            mb-8
+            relative
+            mb-6
           "
         >
-          {/* PHOTO */}
+          {/* GLOW */}
 
-          {photo ? (
-            <img
-              src={photo}
-              alt="Profile"
-              style={{
-                objectPosition:
-                  `${photoPositionX}% ${photoPositionY}%`,
-              }}
-              className="
-                w-32
-                h-32
-                rounded-3xl
-                object-cover
-                border-4
-                border-white/10
-                shadow-xl
-                mb-5
-              "
-            />
-          ) : (
+          <div
+            className="
+              absolute
+              inset-0
+              rounded-[32px]
+              bg-blue-500/20
+              blur-2xl
+              scale-95
+            "
+          />
+
+          {/* FRAME */}
+
+          <div
+            className="
+              relative
+              rounded-[32px]
+              overflow-hidden
+              border
+              border-white/10
+              aspect-[4/5]
+              shadow-2xl
+            "
+          >
+            {photo ? (
+              <img
+                src={photo}
+                alt={personal.name}
+                className="
+                  w-full
+                  h-full
+                  object-cover
+                "
+                style={{
+                  objectPosition: `${photoPositionX}% ${photoPositionY}%`,
+                }}
+              />
+            ) : (
+              <div
+                className={`
+                  w-full
+                  h-full
+                  flex
+                  items-center
+                  justify-center
+                  text-sm
+                  text-center
+                  p-6
+
+                  ${
+                    darkMode
+                      ? 'bg-zinc-800 text-zinc-500'
+                      : 'bg-zinc-100 text-zinc-500'
+                  }
+                `}
+              >
+                Upload a professional
+                portrait image
+                <br />
+                <br />
+                Recommended:
+                <br />
+                1000x1200+
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* CONTACT */}
+
+        <div className="space-y-4">
+          {/* PHONE */}
+
+          {personal.phone && (
             <div
-              className="
-                w-32
-                h-32
-                rounded-3xl
-                bg-white/10
-                flex
-                items-center
-                justify-center
-                text-sm
-                text-zinc-400
-                mb-5
-              "
+              className={`
+                rounded-2xl
+                px-4
+                py-3
+                border
+                transition-all
+                duration-300
+
+                ${
+                  darkMode
+                    ? `
+                      bg-zinc-800
+                      border-zinc-700
+                    `
+                    : `
+                      bg-zinc-50
+                      border-zinc-100
+                    `
+                }
+
+                hover:-translate-y-1
+                hover:shadow-xl
+              `}
             >
-              No Photo
+              <div
+                className="
+                  text-xs
+                  uppercase
+                  tracking-wider
+                  text-blue-400
+                  font-bold
+                  mb-1
+                "
+              >
+                Phone
+              </div>
+
+              <div
+                className={`
+                  text-sm
+                  font-semibold
+
+                  ${
+                    darkMode
+                      ? 'text-white'
+                      : 'text-zinc-800'
+                  }
+                `}
+              >
+                {personal.phone}
+              </div>
             </div>
           )}
 
-          {/* NAME */}
-
-          <h2
-            className="
-              text-3xl
-              font-black
-              leading-tight
-              tracking-tight
-            "
-          >
-            {personal.name}
-          </h2>
-
-          {/* TITLE */}
-
-          <p
-            className="
-              mt-3
-              text-sm
-              leading-6
-              text-zinc-300
-              max-w-[220px]
-            "
-          >
-            {personal.title}
-          </p>
-        </div>
-
-        {/* CONTACT SECTION */}
-
-        <div className="space-y-4 mb-10">
-          <div
-            className="
-              text-xs
-              uppercase
-              tracking-[0.25em]
-              text-blue-400
-              font-bold
-              mb-2
-            "
-          >
-            Contact
-          </div>
-
-          {personal.location && (
-            <InfoCard
-              label="Location"
-              value={
-                personal.location
-              }
-              icon="📍"
-            />
-          )}
-
-          {personal.phone && (
-            <InfoCard
-              label="Primary Contact"
-              value={
-                personal.phone
-              }
-              icon="📞"
-            />
-          )}
-
-          {personal.secondaryPhone && (
-            <InfoCard
-              label="Secondary Contact"
-              value={
-                personal.secondaryPhone
-              }
-              icon="☎️"
-            />
-          )}
+          {/* EMAIL */}
 
           {personal.email && (
-            <InfoCard
-              label="Email Address"
-              value={
-                personal.email
-              }
-              icon="✉️"
-              highlight
-            />
+            <div
+              className={`
+                rounded-2xl
+                px-4
+                py-3
+                border
+                transition-all
+                duration-300
+
+                ${
+                  darkMode
+                    ? `
+                      bg-zinc-800
+                      border-zinc-700
+                    `
+                    : `
+                      bg-zinc-50
+                      border-zinc-100
+                    `
+                }
+
+                hover:-translate-y-1
+                hover:shadow-xl
+              `}
+            >
+              <div
+                className="
+                  text-xs
+                  uppercase
+                  tracking-wider
+                  text-blue-400
+                  font-bold
+                  mb-1
+                "
+              >
+                Email
+              </div>
+
+              <div
+                className={`
+                  text-sm
+                  font-semibold
+                  break-all
+
+                  ${
+                    darkMode
+                      ? 'text-white'
+                      : 'text-zinc-800'
+                  }
+                `}
+              >
+                {personal.email}
+              </div>
+            </div>
           )}
 
-          {personal.linkedin && (
-            <InfoCard
-              label="LinkedIn Profile"
-              value={
-                personal.linkedin
-              }
-              icon="in"
-            />
+          {/* LOCATION */}
+
+          {personal.location && (
+            <div
+              className={`
+                rounded-2xl
+                px-4
+                py-3
+                border
+                transition-all
+                duration-300
+
+                ${
+                  darkMode
+                    ? `
+                      bg-zinc-800
+                      border-zinc-700
+                    `
+                    : `
+                      bg-zinc-50
+                      border-zinc-100
+                    `
+                }
+
+                hover:-translate-y-1
+                hover:shadow-xl
+              `}
+            >
+              <div
+                className="
+                  text-xs
+                  uppercase
+                  tracking-wider
+                  text-blue-400
+                  font-bold
+                  mb-1
+                "
+              >
+                Location
+              </div>
+
+              <div
+                className={`
+                  text-sm
+                  font-semibold
+
+                  ${
+                    darkMode
+                      ? 'text-white'
+                      : 'text-zinc-800'
+                  }
+                `}
+              >
+                {personal.location}
+              </div>
+            </div>
           )}
         </div>
+      </GlassCard>
 
-        {/* CHILD SECTIONS */}
+      {/* EXTRA CONTENT */}
 
-        <div className="space-y-10">
-          {children}
-        </div>
+      <div className="space-y-6">
+        {children}
       </div>
-    </aside>
+    </div>
   )
 }
