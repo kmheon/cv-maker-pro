@@ -1,22 +1,45 @@
 const cvData = {
-  personal: {
-    photo: '',
+personal: {
+  photo: '',
 
-    photoPositionX:
-      50,
+  photoPositionX: 50,
 
-    photoPositionY:
-      50,
+  photoPositionY: 50,
 
-    name:
-      'Alex Johnson',
+  name:
+    'Alex Johnson',
 
-    title:
-      'Senior Network Engineer',
+  title:
+    'Senior Network Engineer',
 
-    summary:
-      'Experienced infrastructure and networking specialist with expertise in enterprise systems, cloud networking, security, and scalable IT solutions.',
+  email:
+    'alex.johnson@email.com',
+
+  phone:
+    '+1 (555) 123-4567',
+
+  address:
+    'New York, USA',
+
+socials: [
+  {
+    platform: 'LinkedIn',
+
+    url:
+      'linkedin.com/in/alexjohnson',
   },
+
+  {
+    platform: 'GitHub',
+
+    url:
+      'github.com/alexjohnson',
+  },
+],
+
+  summary:
+    'Experienced infrastructure and networking specialist with expertise in enterprise systems, cloud networking, security, and scalable IT solutions.',
+},
 
   vendors: [
     'Cisco',

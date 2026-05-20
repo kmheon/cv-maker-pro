@@ -190,7 +190,9 @@ export default function HeroSection({
               hover:rotate-6
             "
           >
-            🌙
+            <span className="text-xl">
+  {darkMode ? '☀️' : '🌙'}
+</span>
           </button>
         </div>
 

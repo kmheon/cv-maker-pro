@@ -1,68 +1,82 @@
-import GlassCard from '../shared/GlassCard'
-
 export default function Sidebar({
-  photo,
-
-  photoPositionX = 50,
-
-  photoPositionY = 50,
-
-  personal,
-
-  darkMode = false,
-
   children,
+  photo,
+  photoPositionX = 50,
+  photoPositionY = 50,
+  personal,
+  darkMode,
 }) {
   return (
-    <div className="space-y-6">
-      {/* PROFILE */}
+    <aside
+      className="
+        relative
+        h-full
+        px-6
+        py-8
 
-      <GlassCard
-        darkMode={darkMode}
+        bg-[#07152d]
+
+        border-r
+        border-white/5
+      "
+    >
+      {/* SIDEBAR BACKGROUND GLOW */}
+
+      <div
         className="
-          p-6
-          sticky
-          top-6
+          absolute
+          inset-0
+          pointer-events-none
+          opacity-80
+
+          bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_35%)]
+        "
+      />
+
+      {/* CONTENT WRAPPER */}
+
+      <div
+        className="
+          relative
+          z-10
+          space-y-5
         "
       >
-        {/* IMAGE */}
+        {/* PROFILE SECTION */}
 
         <div
           className="
-            relative
-            mb-6
+            flex
+            flex-col
+            items-center
+            text-center
           "
         >
-          {/* GLOW */}
-
-          <div
-            className="
-              absolute
-              inset-0
-              rounded-[32px]
-              bg-blue-500/20
-              blur-2xl
-              scale-95
-            "
-          />
-
-          {/* FRAME */}
+          {/* PROFILE IMAGE */}
 
           <div
             className="
               relative
+              w-40
+              h-40
               rounded-[32px]
               overflow-hidden
+
               border
               border-white/10
-              aspect-[4/5]
-              shadow-2xl
+
+              bg-white/5
+
+              shadow-[0_10px_40px_rgba(0,0,0,0.22)]
             "
           >
             {photo ? (
               <img
                 src={photo}
-                alt={personal.name}
+                alt={
+                  personal?.name ||
+                  'Profile'
+                }
                 className="
                   w-full
                   h-full
@@ -74,220 +88,213 @@ export default function Sidebar({
               />
             ) : (
               <div
-                className={`
+                className="
                   w-full
                   h-full
+
                   flex
                   items-center
                   justify-center
-                  text-sm
-                  text-center
-                  p-6
 
-                  ${
-                    darkMode
-                      ? 'bg-[#111c31] text-zinc-500'
-                      : 'bg-zinc-100 text-zinc-500'
-                  }
-                `}
+                  text-white/40
+                  text-sm
+                "
               >
-                Upload a professional
-                portrait image
-                <br />
-                <br />
-                Recommended:
-                <br />
-                1000x1200+
+                No Image
               </div>
             )}
           </div>
+
+          {/* NAME */}
+
+          <h1
+            className="
+              mt-5
+              text-2xl
+              font-bold
+              tracking-tight
+              text-white
+            "
+          >
+            {personal?.name}
+          </h1>
+
+          {/* TITLE */}
+
+          <p
+            className="
+              mt-2
+              text-sm
+              leading-6
+              text-blue-200/80
+            "
+          >
+            {personal?.title}
+          </p>
         </div>
 
-        {/* CONTACT */}
+        {/* CONTACT INFO */}
 
-        <div className="space-y-4">
-          {/* PHONE */}
+        <div
+          className="
+            rounded-[28px]
 
-          {personal.phone && (
-            <div
-              className={`
-                rounded-2xl
-                px-4
-                py-3
-                border
-                transition-all
-                duration-300
+            bg-white/[0.03]
 
-                ${
-                  darkMode
-                    ? `
-                      bg-[#111c31]
-                      border-white/5
-                    `
-                    : `
-                      bg-zinc-50
-                      border-zinc-100
-                    `
-                }
+            border
+            border-white/5
 
-                hover:-translate-y-1
-                hover:shadow-xl
-              `}
+            p-5
+
+            space-y-3
+          "
+        >
+          {/* CONTACT HEADER */}
+
+          {/* 
+            Uncomment this block if you want
+            the Contact title section visible again
+
+          <div className="mb-5">
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.18em]
+
+                text-white/40
+
+                mb-2
+              "
             >
-              <div
-                className="
-                  text-xs
-                  uppercase
-                  tracking-wider
-                  text-blue-400
-                  font-bold
-                  mb-1
-                "
-              >
-                Phone
-              </div>
+              Personal
+            </p>
 
-              <div
-                className={`
-                  text-sm
-                  font-semibold
-
-                  ${
-                    darkMode
-                      ? 'text-white'
-                      : 'text-zinc-800'
-                  }
-                `}
-              >
-                {personal.phone}
-              </div>
-            </div>
-          )}
+            <h2
+              className="
+                text-xl
+                font-bold
+                text-white
+              "
+            >
+              Contact
+            </h2>
+          </div>
+          */}
 
           {/* EMAIL */}
 
-          {personal.email && (
-            <div
-              className={`
-                rounded-2xl
-                px-4
-                py-3
-                border
-                transition-all
-                duration-300
-
-                ${
-                  darkMode
-                    ? `
-                      bg-[#111c31]
-                      border-white/5
-                    `
-                    : `
-                      bg-zinc-50
-                      border-zinc-100
-                    `
-                }
-
-                hover:-translate-y-1
-                hover:shadow-xl
-              `}
+          <div>
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.2em]
+                text-white/40
+                mb-1
+              "
             >
-              <div
-                className="
-                  text-xs
-                  uppercase
-                  tracking-wider
-                  text-blue-400
-                  font-bold
-                  mb-1
-                "
-              >
-                Email
-              </div>
+              Email
+            </p>
 
-              <div
-                className={`
-                  text-sm
-                  font-semibold
-                  break-all
+            <a
+              href={`mailto:${personal?.email}`}
+              className="
+                text-sm
+                text-white/90
 
-                  ${
-                    darkMode
-                      ? 'text-white'
-                      : 'text-zinc-800'
-                  }
-                `}
-              >
-                {personal.email}
-              </div>
-            </div>
-          )}
+                break-all
 
-          {/* LOCATION */}
+                hover:text-blue-300
 
-          {personal.location && (
-            <div
-              className={`
-                rounded-2xl
-                px-4
-                py-3
-                border
-                transition-all
-                duration-300
-
-                ${
-                  darkMode
-                    ? `
-                      bg-[#111c31]
-                      border-white/5
-                    `
-                    : `
-                      bg-zinc-50
-                      border-zinc-100
-                    `
-                }
-
-                hover:-translate-y-1
-                hover:shadow-xl
-              `}
+                transition-colors
+              "
             >
-              <div
-                className="
-                  text-xs
-                  uppercase
-                  tracking-wider
-                  text-blue-400
-                  font-bold
-                  mb-1
-                "
-              >
-                Location
-              </div>
+              {personal?.email ||
+                'your@email.com'}
+            </a>
+          </div>
 
-              <div
-                className={`
-                  text-sm
-                  font-semibold
+          {/* PHONE */}
 
-                  ${
-                    darkMode
-                      ? 'text-white'
-                      : 'text-zinc-800'
-                  }
-                `}
-              >
-                {personal.location}
-              </div>
-            </div>
-          )}
+          <div>
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.2em]
+                text-white/40
+                mb-1
+              "
+            >
+              Phone
+            </p>
+
+            <a
+              href={`tel:${personal?.phone}`}
+              className="
+                text-sm
+                text-white/90
+
+                hover:text-blue-300
+
+                transition-colors
+              "
+            >
+              {personal?.phone ||
+                '+1 (000) 000-0000'}
+            </a>
+          </div>
+
+          {/* ADDRESS */}
+
+          <div>
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.2em]
+                text-white/40
+                mb-1
+              "
+            >
+              Address
+            </p>
+
+            <p
+              className="
+                text-sm
+                leading-6
+                text-white/90
+              "
+            >
+              {personal?.address ||
+                'Your City, Country'}
+            </p>
+          </div>
         </div>
-      </GlassCard>
 
-      {/* EXTRA CONTENT */}
+        {/* 
+          OLD LINKEDIN BLOCK
 
-      <div className="space-y-6">
-        {children}
+          This was replaced by the new
+          scalable SocialSection system.
+
+          If you ever want the old
+          single LinkedIn card back,
+          paste it here.
+        */}
+
+        {/* SIDEBAR CONTENT */}
+
+        <div
+          className="
+            space-y-4
+          "
+        >
+          {children}
+        </div>
       </div>
-    </div>
+    </aside>
   )
 }

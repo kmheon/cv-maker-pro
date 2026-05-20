@@ -3,6 +3,10 @@ import {
   exportPdf,
 } from '../utils/exportPdf'
 
+import {
+  templateList,
+} from '../templates'
+
 export default function EditorPanel({
   cvData,
   setCvData,
@@ -31,7 +35,7 @@ export default function EditorPanel({
       "
     >
       {/* CONTAINER */}
-      
+
       {/* CARD */}
       <GlassCard
         className="
@@ -61,7 +65,7 @@ export default function EditorPanel({
             Live editing system
           </p>
         </div>
-        
+
         {/* RESET */}
         <div className="mb-6">
           <button
@@ -87,7 +91,7 @@ export default function EditorPanel({
             "
           >
             Reset CV Data
-          </button> 
+          </button>
         </div>
 
         {/* ACTIONS */}
@@ -133,7 +137,7 @@ export default function EditorPanel({
             "
           >
             Export JSON
-          </button> 
+          </button>
 
           {/* IMPORT */}
           <label
@@ -151,7 +155,7 @@ export default function EditorPanel({
           >
             Import JSON
 
-            <input  
+            <input
               type="file"
               accept=".json"
               hidden
@@ -189,47 +193,275 @@ export default function EditorPanel({
           </label>
         </div>
 
-        {/* TEMPLATE */}
-        <div className="mb-8">
-          <label
-            className="
-              block
-              mb-2
-              text-sm
-              font-semibold
-              text-zinc-700
-            "
-          >
-            Template
-          </label>
+        /* =========================
+        TEMPLATE SELECTOR
+========================= */
 
-          <select
-            value={selectedTemplate}
-            onChange={(e) =>
+<div className="mb-10">
+  {/* TITLE */}
+
+  <div className="mb-4">
+    <h3
+      className="
+        text-xl
+        font-bold
+        text-zinc-900
+        mb-1
+      "
+    >
+      Templates
+    </h3>
+
+    <p
+      className="
+        text-sm
+        text-zinc-500
+      "
+    >
+      Choose your resume style
+    </p>
+  </div>
+
+  {/* TEMPLATE GRID */}
+
+  <div
+  className="
+    grid
+    gap-4
+    md:grid-cols-2
+  "
+>
+    {templateList.map(
+      (template) => {
+        const isActive =
+          selectedTemplate ===
+          template.id
+
+        return (
+          <button
+            key={template.id}
+            onClick={() =>
               setSelectedTemplate(
-                e.target.value
+                template.id
               )
             }
-            className="
-              w-full
-              p-4
-              rounded-2xl
+            className={`
+              relative
+              overflow-hidden
+              rounded-3xl
               border
-              border-zinc-200
-              bg-white
-              text-zinc-900
-              outline-none
-            "
+              p-5
+              text-left
+              transition-all
+              duration-500
+              ease-out
+              transform-gpu
+
+              ${
+                isActive
+                  ? `
+                    border-blue-500
+                    bg-blue-50
+                    shadow-[0_20px_50px_rgba(59,130,246,0.18)]
+                    scale-[1.02]
+                  `
+                  : `
+                    border-zinc-200
+                    bg-white
+                    hover:border-blue-300
+                    hover:-translate-y-1
+                  `
+              }
+            `}
           >
-            <option value="modernGlass">
-              Modern Glass
-            </option>
-          </select>
-        </div>
+            {/* ACTIVE GLOW */}
+
+            {isActive && (
+              <div
+                className="
+                  absolute
+                  inset-0
+                  bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_45%)]
+                  pointer-events-none
+                "
+              />
+            )}
+            /* TEMPLATE THUMBNAIL */
+
+<div
+  className="
+    mb-4
+    overflow-hidden
+    rounded-2xl
+    border
+    border-zinc-200
+    bg-zinc-100
+  "
+>
+  <img
+    src={template.thumbnail}
+    alt={template.name}
+    className="
+      w-full
+      h-40
+      object-cover
+      transition-all
+      duration-500
+
+      group-hover:scale-105
+    "
+  />
+</div>
+            {/* CONTENT */}
+
+            <div className="relative z-10">
+              {/* TOP */}
+
+              <div
+                className="
+                  flex
+                  items-start
+                  justify-between
+                  gap-4
+                  mb-3
+                "
+              >
+                {/* INFO */}
+
+                <div>
+                  <h4
+                    className="
+                      text-lg
+                      font-bold
+                      text-zinc-900
+                    "
+                  >
+                    {template.name}
+                  </h4>
+
+                  <p
+                    className="
+                      text-sm
+                      text-zinc-500
+                      mt-1
+                    "
+                  >
+                    {
+                      template.description
+                    }
+                  </p>
+                </div>
+
+                {/* CATEGORY */}
+
+                <div
+                  className="
+                    px-3
+                    py-1
+                    rounded-full
+                    bg-blue-100
+                    text-blue-700
+                    text-xs
+                    font-bold
+                  "
+                >
+                  {
+                    template.category
+                  }
+                </div>
+              </div>
+
+              /* TEMPLATE TAGS */
+
+<div
+  className="
+    flex
+    flex-wrap
+    gap-2
+    mt-4
+  "
+>
+  {/* CATEGORY */}
+
+  <div
+    className="
+      px-2
+      py-1
+      rounded-lg
+      bg-blue-100
+      text-blue-700
+      text-xs
+      font-semibold
+    "
+  >
+    {template.category}
+  </div>
+
+  {/* DARK MODE */}
+
+  {template.darkSupported && (
+    <div
+      className="
+        px-2
+        py-1
+        rounded-lg
+        bg-zinc-100
+        text-zinc-700
+        text-xs
+        font-semibold
+      "
+    >
+      Dark Mode
+    </div>
+  )}
+
+  {/* FEATURED */}
+
+  {template.featured && (
+    <div
+      className="
+        px-2
+        py-1
+        rounded-lg
+        bg-amber-100
+        text-amber-700
+        text-xs
+        font-semibold
+      "
+    >
+      Featured
+    </div>
+  )}
+
+  {/* PREMIUM */}
+
+  {template.premium && (
+    <div
+      className="
+        px-2
+        py-1
+        rounded-lg
+        bg-purple-100
+        text-purple-700
+        text-xs
+        font-semibold
+      "
+    >
+      Premium
+    </div>
+  )}
+</div>
+            </div>
+          </button>
+        )
+      }
+    )}
+  </div>
+</div>
 
         {/* PERSONAL */}
-        <div className="space-y-5">
-          
+        <div className="space-y-4">
+
           {/* PHOTO */}
           <div>
             <label
@@ -299,7 +531,7 @@ export default function EditorPanel({
               Photo Horizontal Position
             </label>
 
-            <input  
+            <input
               type="range"
               min="0"
               max="100"
@@ -531,9 +763,130 @@ export default function EditorPanel({
             />
           </div>
         </div>
+         {/* EMAIL */}
 
+<div>
+  <label
+    className="
+      block
+      text-sm
+      font-medium
+      mb-2
+    "
+  >
+    Email
+  </label>
+
+  <input
+    type="email"
+    value={
+      cvData.personal.email
+    }
+    onChange={(e) =>
+      setCvData({
+        ...cvData,
+
+        personal: {
+          ...cvData.personal,
+
+          email:
+            e.target.value,
+        },
+      })
+    }
+    className="
+      w-full
+      p-3
+      rounded-xl
+      border
+      border-zinc-200
+    "
+  />
+</div>
+
+{/* PHONE */}
+
+<div>
+  <label
+    className="
+      block
+      text-sm
+      font-medium
+      mb-2
+    "
+  >
+    Phone
+  </label>
+
+  <input
+    type="text"
+    value={
+      cvData.personal.phone
+    }
+    onChange={(e) =>
+      setCvData({
+        ...cvData,
+
+        personal: {
+          ...cvData.personal,
+
+          phone:
+            e.target.value,
+        },
+      })
+    }
+    className="
+      w-full
+      p-3
+      rounded-xl
+      border
+      border-zinc-200
+    "
+  />
+</div>
+
+{/* ADDRESS */}
+
+<div>
+  <label
+    className="
+      block
+      text-sm
+      font-medium
+      mb-2
+    "
+  >
+    Address
+  </label>
+
+  <input
+    type="text"
+    value={
+      cvData.personal.address
+    }
+    onChange={(e) =>
+      setCvData({
+        ...cvData,
+
+        personal: {
+          ...cvData.personal,
+
+          address:
+            e.target.value,
+        },
+      })
+    }
+    className="
+      w-full
+      p-3
+      rounded-xl
+      border
+      border-zinc-200
+    "
+  />
+</div>       
         {/* SKILLS */}
-        <div className="pt-10">
+        <div className="pt-8">
           <div
             className="
               flex
@@ -583,7 +936,7 @@ export default function EditorPanel({
             </button>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {cvData.skills.map(
               (skill, index) => (
                 <div
@@ -709,7 +1062,7 @@ export default function EditorPanel({
         </div>
 
         {/* EXPERIENCE */}
-        <div className="pt-10">
+        <div className="pt-8">
           <div
             className="
               flex
@@ -764,7 +1117,7 @@ export default function EditorPanel({
             </button>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {cvData.experience.map(
               (job, index) => (
                 <div
@@ -946,7 +1299,7 @@ export default function EditorPanel({
         </div>
 
         {/* EDUCATION */}
-        <div className="pt-10">
+        <div className="pt-8">
           <div
             className="
               flex
@@ -998,7 +1351,7 @@ export default function EditorPanel({
             </button>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {cvData.education.map(
               (item, index) => (
                 <div
@@ -1150,7 +1503,7 @@ export default function EditorPanel({
         </div>
 
         {/* CERTIFICATIONS */}
-        <div className="pt-10">
+        <div className="pt-8">
           <div
             className="
               flex
@@ -1196,7 +1549,7 @@ export default function EditorPanel({
             </button>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {cvData.certifications.map(
               (cert, index) => (
                 <div
@@ -1270,7 +1623,7 @@ export default function EditorPanel({
         </div>
 
         {/* LANGUAGES */}
-        <div className="mb-10 pt-10">
+        <div className="mb-10 pt-8">
           <div
             className="
               flex
@@ -1367,7 +1720,7 @@ export default function EditorPanel({
                     min="0"
                     max="100"
                     value={
-                      language.level
+                      language.progress
                     }
                     onChange={(e) => {
                       const updated =
@@ -1377,7 +1730,7 @@ export default function EditorPanel({
 
                       updated[
                         index
-                      ].level =
+                      ].progress =
                         Number(
                           e.target.value
                         )
@@ -1400,9 +1753,7 @@ export default function EditorPanel({
                   <input
                     type="text"
                     placeholder="Professional"
-                    value={
-                      language.levelLabel
-                    }
+                    value={language.levelLabel}
                     onChange={(e) => {
                       const updated =
                         [
@@ -1462,10 +1813,305 @@ export default function EditorPanel({
               )
             )}
           </div>
-        </div>     
+        </div>
+          {/* =========================
+    SOCIAL LINKS
+========================= */}
 
+<div className="space-y-4">
+  {/* HEADER */}
+
+  <div
+    className="
+      flex
+      items-center
+      justify-between
+    "
+  >
+    <h3
+      className="
+        text-lg
+        font-bold
+      "
+    >
+      Social Links
+    </h3>
+
+    <button
+      onClick={() => {
+        setCvData({
+          ...cvData,
+
+          personal: {
+            ...cvData.personal,
+
+            socials: [
+              ...(cvData.personal
+                .socials || []),
+
+              {
+                platform:
+                  'LinkedIn',
+
+                url:
+                  'linkedin.com/in/yourname',
+              },
+            ],
+          },
+        })
+      }}
+      className="
+        px-4
+        py-2
+
+        rounded-xl
+
+        bg-blue-500
+        text-white
+
+        text-sm
+        font-medium
+      "
+    >
+      Add Social
+    </button>
+  </div>
+
+  {/* SOCIAL LIST */}
+
+  {(cvData.personal.socials ||
+    []).map(
+    (social, index) => (
+      <div
+        key={index}
+        className="
+          p-4
+
+          rounded-2xl
+
+          border
+          border-zinc-200
+
+          space-y-3
+        "
+      >
+        {/* PLATFORM */}
+
+<select
+  value={social.platform}
+
+  onChange={(e) => {
+    const updated = [
+      ...cvData.personal
+        .socials,
+    ]
+
+    updated[index].platform =
+      e.target.value
+
+    setCvData({
+      ...cvData,
+
+      personal: {
+        ...cvData.personal,
+
+        socials: updated,
+      },
+    })
+  }}
+
+  className="
+    w-full
+    p-3
+
+    rounded-xl
+
+    border
+    border-zinc-200
+  "
+>
+  <option value="LinkedIn">
+    LinkedIn
+  </option>
+
+  <option value="GitHub">
+    GitHub
+  </option>
+
+  <option value="Facebook">
+    Facebook
+  </option>
+
+  <option value="Instagram">
+    Instagram
+  </option>
+
+  <option value="Twitter">
+    Twitter / X
+  </option>
+
+  <option value="Portfolio">
+    Portfolio
+  </option>
+
+  <option value="YouTube">
+    YouTube
+  </option>
+
+  <option value="Behance">
+    Behance
+  </option>
+
+  <option value="Dribbble">
+    Dribbble
+  </option>
+
+  <option value="Fiverr">
+    Fiverr
+  </option>
+
+  <option value="Upwork">
+    Upwork
+  </option>
+
+  <option value="Custom">
+    Custom Platform
+  </option>
+</select>
+
+{/* CUSTOM PLATFORM */}
+
+{social.platform ===
+  'Custom' && (
+  <input
+    type="text"
+
+    placeholder="Custom Platform Name"
+
+    value={
+      social.customPlatform ||
+      ''
+    }
+
+    onChange={(e) => {
+      const updated = [
+        ...cvData.personal
+          .socials,
+      ]
+
+      updated[
+        index
+      ].customPlatform =
+        e.target.value
+
+      setCvData({
+        ...cvData,
+
+        personal: {
+          ...cvData.personal,
+
+          socials:
+            updated,
+        },
+      })
+    }}
+
+    className="
+      w-full
+      p-3
+
+      rounded-xl
+
+      border
+      border-zinc-200
+    "
+  />
+)}
+
+        <input
+          type="text"
+          placeholder="Profile URL"
+
+          value={social.url}
+
+          onChange={(e) => {
+            const updated = [
+              ...cvData.personal
+                .socials,
+            ]
+
+            updated[
+              index
+            ].url =
+              e.target.value
+
+            setCvData({
+              ...cvData,
+
+              personal: {
+                ...cvData.personal,
+
+                socials:
+                  updated,
+              },
+            })
+          }}
+
+          className="
+            w-full
+            p-3
+
+            rounded-xl
+
+            border
+            border-zinc-200
+          "
+        />
+
+        {/* REMOVE */}
+
+        <button
+          onClick={() => {
+            const updated =
+              cvData.personal.socials.filter(
+                (_, i) =>
+                  i !== index
+              )
+
+            setCvData({
+              ...cvData,
+
+              personal: {
+                ...cvData.personal,
+
+                socials:
+                  updated,
+              },
+            })
+          }}
+
+          className="
+            w-full
+
+            py-2
+
+            rounded-xl
+
+            bg-red-500
+            text-white
+
+            text-sm
+            font-medium
+          "
+        >
+          Remove Social
+        </button>
+      </div>
+    )
+  )}
+</div>
         {/* REFERENCES */}
-        <div className="pt-10">
+        <div className="pt-8">
           <div
             className="
               flex
@@ -1517,7 +2163,7 @@ export default function EditorPanel({
             </button>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {cvData.references.map(
               (reference, index) => (
                 <div

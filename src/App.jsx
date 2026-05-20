@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 
 import EditorPanel from './editor/EditorPanel'
 
-import { templates } from './templates'
+import templates from './templates'
 
 import cvDataFile from './data/cvData'
+
 
 export default function App() {
   /* =========================
@@ -35,10 +36,11 @@ export default function App() {
   ========================= */
 
   const [
-    selectedTemplate,
-
-    setSelectedTemplate,
-  ] = useState('modernGlass')
+  selectedTemplate,
+  setSelectedTemplate,
+] = useState(
+  'modernGlass'
+)
 
   /* =========================
      EDITOR
@@ -67,9 +69,11 @@ export default function App() {
   ========================= */
 
   const ActiveTemplate =
-    templates?.[
-      selectedTemplate
-    ]?.component
+  templates[
+    selectedTemplate
+  ]?.component ||
+  templates.modernGlass
+    .component
 
   /* =========================
      RENDER
@@ -246,15 +250,22 @@ export default function App() {
             mx-auto
           "
         >
-          {ActiveTemplate && (
-            <ActiveTemplate
-              data={cvData}
-              darkMode={darkMode}
-              setDarkMode={
-                setDarkMode
-              }
-            />
-          )}
+          <div
+  key={selectedTemplate}
+  className="
+    animate-[fadeIn_.45s_ease]
+  "
+>
+  {ActiveTemplate && (
+    <ActiveTemplate
+      cvData={cvData}
+      darkMode={darkMode}
+      setDarkMode={
+        setDarkMode
+      }
+    />
+  )}
+</div>
         </div>
       </div>
     </div>
