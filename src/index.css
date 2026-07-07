@@ -18,3 +18,25 @@
       scale(1);
   }
 }
+
+@keyframes heroFloat {
+
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+
+}
+
+.hero-float{
+
+  animation:heroFloat 6s ease-in-out infinite;
+
+}
