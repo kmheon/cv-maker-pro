@@ -4,25 +4,30 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 
 import App from './App'
+import LandingPage from './landing/LandingPage'
 import PublicCvView from './PublicCvView'
 
 import {
   ThemeProvider,
 } from './context/ThemeContext'
 
-/**
- * Minimal path-based routing — deliberately not using a router library
- * so the app has no extra dependency for a single public route.
- * Matches "/cv/:id" and renders the read-only public CV viewer;
- * everything else renders the normal editor app.
- */
-const cvMatch = window.location.pathname.match(/^\/cv\/([a-f0-9]+)\/?$/)
+const pathname = window.location.pathname
+
+const cvMatch = pathname.match(/^\/cv\/([a-f0-9]+)\/?$/)
+
+const isLanding =
+  pathname === '/' ||
+  pathname === '/index.html'
 
 const RootComponent = cvMatch ? (
   <PublicCvView id={cvMatch[1]} />
 ) : (
   <ThemeProvider>
-    <App />
+    {isLanding ? (
+      <LandingPage />
+    ) : (
+      <App />
+    )}
   </ThemeProvider>
 )
 
