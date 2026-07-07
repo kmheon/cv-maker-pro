@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from 'react'
 
@@ -11,7 +12,21 @@ export function ThemeProvider({
   children,
 }) {
   const [darkMode, setDarkMode] =
-    useState(false)
+    useState(() => {
+      const saved =
+        localStorage.getItem(
+          'cv-theme'
+        )
+
+      return saved === 'dark'
+    })
+
+  useEffect(() => {
+    localStorage.setItem(
+      'cv-theme',
+      darkMode ? 'dark' : 'light'
+    )
+  }, [darkMode])
 
   return (
     <ThemeContext.Provider

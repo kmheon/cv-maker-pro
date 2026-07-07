@@ -1,6 +1,5 @@
 export default function LanguageSection({
   languages,
-  darkMode,
 }) {
   return (
     <section
@@ -135,7 +134,7 @@ export default function LanguageSection({
                     bg-emerald-400/40
                   "
                   style={{
-                    width: `${language.progress}%`,
+                    width: `${language.level}%`,
                   }}
                 />
 
@@ -153,7 +152,7 @@ export default function LanguageSection({
                     to-emerald-300
                   "
                   style={{
-                    width: `${language.progress}%`,
+                    width: `${language.level}%`,
                   }}
                 />
               </div>

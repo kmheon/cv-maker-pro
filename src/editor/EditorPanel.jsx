@@ -7,12 +7,66 @@ import {
   templateList,
 } from '../templates'
 
+import cvDataFile from '../data/cvData'
+import { usePremiumUnlock } from '../context/usePremiumUnlock'
+import AdUnlockModal from '../shared/AdUnlockModal'
+import PublishModal from '../shared/PublishModal'
+import { parseResumeFile } from '../utils/api'
+import { useRef, useState } from 'react'
+
 export default function EditorPanel({
   cvData,
   setCvData,
+  darkMode,
   selectedTemplate,
   setSelectedTemplate,
 }) {
+  const { isUnlocked, unlock } = usePremiumUnlock()
+  const [adModalTemplate, setAdModalTemplate] = useState(null)
+  const [publishOpen, setPublishOpen] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const resumeFileInputRef = useRef(null)
+
+  const handleTemplateClick = (template) => {
+    if (template.premium && !isUnlocked(template.id)) {
+      setAdModalTemplate(template)
+    } else {
+      setSelectedTemplate(template.id)
+    }
+  }
+
+  const handleResumeFileChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setImporting(true)
+
+    try {
+      const { parsedData } = await parseResumeFile(file)
+
+      setCvData({
+        ...cvData,
+        ...parsedData,
+        personal: {
+          ...cvData.personal,
+          ...(parsedData.personal || {}),
+        },
+      })
+
+      alert(
+        "We've auto-filled what we could find in your file. Please review every section — automatic detection isn't perfect."
+      )
+    } catch (err) {
+      alert(
+        err.message ||
+          'Could not import that file. Please try a different PDF or DOCX.'
+      )
+    } finally {
+      setImporting(false)
+      e.target.value = ''
+    }
+  }
+
   const updatePersonal =
     (field, value) => {
       setCvData({
@@ -95,7 +149,76 @@ export default function EditorPanel({
         </div>
 
         {/* ACTIONS */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {/* DOWNLOAD PDF */}
+          <button
+            onClick={() =>
+              exportPdf('cv-preview')
+            }
+            className="
+              p-3
+              rounded-2xl
+              bg-emerald-600
+              text-white
+              text-sm
+              font-semibold
+              hover:bg-emerald-700
+              transition-all
+            "
+          >
+            Export PDF
+          </button>
+
+          {/* PUBLISH ONLINE */}
+          <button
+            onClick={() => setPublishOpen(true)}
+            className="
+              p-3
+              rounded-2xl
+              bg-indigo-600
+              text-white
+              text-sm
+              font-semibold
+              hover:bg-indigo-700
+              transition-all
+            "
+          >
+            🌐 Publish Online
+          </button>
+
+          {/* IMPORT RESUME (PDF/DOCX) */}
+          <label
+            className={`
+              p-3
+              rounded-2xl
+              text-sm
+              font-semibold
+              text-center
+              cursor-pointer
+              transition-all
+              col-span-2
+
+              ${
+                importing
+                  ? 'bg-zinc-300 text-zinc-500 cursor-wait'
+                  : 'bg-amber-500 text-white hover:bg-amber-600'
+              }
+            `}
+          >
+            {importing
+              ? 'Reading your file…'
+              : '📄 Import Old CV (PDF / DOCX)'}
+
+            <input
+              ref={resumeFileInputRef}
+              type="file"
+              accept=".pdf,.docx"
+              hidden
+              disabled={importing}
+              onChange={handleResumeFileChange}
+            />
+          </label>
+
           {/* EXPORT */}
           <button
             onClick={() => {
@@ -177,10 +300,16 @@ export default function EditorPanel({
                         event.target.result
                       )
 
-                    setCvData(
-                      importedData
-                    )
-                  } catch (error) {
+                    setCvData({
+                      ...cvDataFile,
+                      ...importedData,
+                      personal: {
+                        ...cvDataFile.personal,
+                        ...(importedData.personal ||
+                          {}),
+                      },
+                    })
+                  } catch {
                     alert(
                       'Incorrect JSON format'
                     )
@@ -193,9 +322,9 @@ export default function EditorPanel({
           </label>
         </div>
 
-        /* =========================
+        {/* =========================
         TEMPLATE SELECTOR
-========================= */
+========================= */}
 
 <div className="mb-10">
   {/* TITLE */}
@@ -241,8 +370,8 @@ export default function EditorPanel({
           <button
             key={template.id}
             onClick={() =>
-              setSelectedTemplate(
-                template.id
+              handleTemplateClick(
+                template
               )
             }
             className={`
@@ -286,10 +415,11 @@ export default function EditorPanel({
                 "
               />
             )}
-            /* TEMPLATE THUMBNAIL */
+            {/* TEMPLATE THUMBNAIL */}
 
 <div
   className="
+    relative
     mb-4
     overflow-hidden
     rounded-2xl
@@ -301,7 +431,7 @@ export default function EditorPanel({
   <img
     src={template.thumbnail}
     alt={template.name}
-    className="
+    className={`
       w-full
       h-40
       object-cover
@@ -309,8 +439,37 @@ export default function EditorPanel({
       duration-500
 
       group-hover:scale-105
-    "
+
+      ${
+        template.premium &&
+        !isUnlocked(template.id)
+          ? 'blur-[2px] brightness-75'
+          : ''
+      }
+    `}
   />
+
+  {template.premium &&
+    !isUnlocked(template.id) && (
+      <div
+        className="
+          absolute
+          inset-0
+          flex
+          flex-col
+          items-center
+          justify-center
+          gap-1
+          bg-black/25
+          text-white
+        "
+      >
+        <span className="text-2xl">🔒</span>
+        <span className="text-xs font-bold">
+          Watch ad to unlock
+        </span>
+      </div>
+    )}
 </div>
             {/* CONTENT */}
 
@@ -371,7 +530,7 @@ export default function EditorPanel({
                 </div>
               </div>
 
-              /* TEMPLATE TAGS */
+              {/* TEMPLATE TAGS */}
 
 <div
   className="
@@ -437,17 +596,23 @@ export default function EditorPanel({
 
   {template.premium && (
     <div
-      className="
+      className={`
         px-2
         py-1
         rounded-lg
-        bg-purple-100
-        text-purple-700
         text-xs
         font-semibold
-      "
+
+        ${
+          isUnlocked(template.id)
+            ? 'bg-emerald-100 text-emerald-700'
+            : 'bg-purple-100 text-purple-700'
+        }
+      `}
     >
-      Premium
+      {isUnlocked(template.id)
+        ? '✓ Unlocked'
+        : '🔒 Watch ad to unlock'}
     </div>
   )}
 </div>
@@ -485,16 +650,26 @@ export default function EditorPanel({
 
                 if (!file) return
 
-                const imageUrl =
-                  URL.createObjectURL(file)
+                const reader =
+                  new FileReader()
 
-                setCvData({
-                  ...cvData,
-                  personal: {
-                    ...cvData.personal,
-                    photo: imageUrl,
-                  },
-                })
+                reader.onload = (
+                  event
+                ) => {
+                  setCvData({
+                    ...cvData,
+                    personal: {
+                      ...cvData.personal,
+                      photo:
+                        event.target
+                          .result,
+                    },
+                  })
+                }
+
+                reader.readAsDataURL(
+                  file
+                )
               }}
               className="
                 w-full
@@ -614,55 +789,32 @@ export default function EditorPanel({
             Center Image
           </button>
 
-          {/* POSITION-SELECTOR */}
-          <div>
-            <label
-              className="
-                block
-                mb-2
-                text-sm
-                font-semibold
-                text-zinc-700
-              "
-            >
-              Photo Vertical Position
-            </label>
-
-            <select
-              value={
-                cvData.personal.photoPositionY
-              }
-              onChange={(e) => {
+          {cvData.personal.photo && (
+            <button
+              onClick={() => {
                 setCvData({
                   ...cvData,
                   personal: {
                     ...cvData.personal,
-                    photoPositionY:
-                      e.target.value,
+                    photo: '',
                   },
                 })
               }}
               className="
                 w-full
+                mt-2
                 p-3
-                rounded-xl
-                border
-                border-zinc-200
+                rounded-2xl
+                bg-red-500
+                text-white
+                font-semibold
+                hover:bg-red-600
+                transition-all
               "
             >
-              <option value="top">
-                Top
-              </option>
-
-              <option value="center">
-                Center
-              </option>
-
-              <option value="bottom">
-                Bottom
-              </option>
-            </select>
-          </div>
+              Remove Photo
+            </button>
+          )}
 
           {/* NAME */}
           <div>
@@ -761,6 +913,116 @@ export default function EditorPanel({
                 border-zinc-200
               "
             />
+          </div>
+
+          {/* VENDOR STACK */}
+          <div>
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                mb-2
+              "
+            >
+              <label
+                className="
+                  text-sm
+                  font-semibold
+                  text-zinc-700
+                "
+              >
+                Vendor Stack
+              </label>
+
+              <button
+                onClick={() => {
+                  setCvData({
+                    ...cvData,
+                    vendors: [
+                      ...(cvData.vendors ||
+                        []),
+                      'New Vendor',
+                    ],
+                  })
+                }}
+                className="
+                  px-3
+                  py-1.5
+                  rounded-xl
+                  bg-blue-600
+                  text-white
+                  text-xs
+                  font-semibold
+                "
+              >
+                Add Vendor
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {(cvData.vendors || []).map(
+                (vendor, index) => (
+                  <div
+                    key={index}
+                    className="
+                      flex
+                      gap-2
+                    "
+                  >
+                    <input
+                      type="text"
+                      value={vendor}
+                      onChange={(e) => {
+                        const updated = [
+                          ...cvData.vendors,
+                        ]
+
+                        updated[index] =
+                          e.target.value
+
+                        setCvData({
+                          ...cvData,
+                          vendors: updated,
+                        })
+                      }}
+                      className="
+                        flex-1
+                        p-3
+                        rounded-xl
+                        border
+                        border-zinc-200
+                      "
+                    />
+
+                    <button
+                      onClick={() => {
+                        const updated =
+                          cvData.vendors.filter(
+                            (_, i) =>
+                              i !== index
+                          )
+
+                        setCvData({
+                          ...cvData,
+                          vendors: updated,
+                        })
+                      }}
+                      className="
+                        px-4
+                        rounded-xl
+                        bg-red-500
+                        text-white
+                        text-sm
+                        font-semibold
+                      "
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
          {/* EMAIL */}
@@ -1720,7 +1982,7 @@ export default function EditorPanel({
                     min="0"
                     max="100"
                     value={
-                      language.progress
+                      language.level
                     }
                     onChange={(e) => {
                       const updated =
@@ -1730,7 +1992,7 @@ export default function EditorPanel({
 
                       updated[
                         index
-                      ].progress =
+                      ].level =
                         Number(
                           e.target.value
                         )
@@ -2316,6 +2578,24 @@ export default function EditorPanel({
           </div>
         </div>
       </GlassCard>
+
+      <AdUnlockModal
+        open={!!adModalTemplate}
+        templateName={adModalTemplate?.name}
+        onClose={() => setAdModalTemplate(null)}
+        onComplete={() => {
+          unlock(adModalTemplate.id)
+          setSelectedTemplate(adModalTemplate.id)
+        }}
+      />
+
+      <PublishModal
+        open={publishOpen}
+        onClose={() => setPublishOpen(false)}
+        cvData={cvData}
+        selectedTemplate={selectedTemplate}
+        darkMode={darkMode}
+      />
     </div>
   )
 }

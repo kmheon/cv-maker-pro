@@ -1,5 +1,3 @@
-import MainLayout from '../../layouts/MainLayout'
-
 import Sidebar from '../../layouts/Sidebar'
 
 import HeroSection from '../../layouts/HeroSection'
@@ -24,13 +22,14 @@ export default function ModernGlass({
   setDarkMode,
 }) {
   const {
-    personal,
-    skills,
-    experience,
-    education,
-    certifications,
-    languages,
-    references,
+    personal = {},
+    skills = [],
+    experience = [],
+    education = [],
+    certifications = [],
+    languages = [],
+    references = [],
+    vendors = [],
   } = cvData
 
   return (
@@ -95,7 +94,8 @@ export default function ModernGlass({
               />
               <SocialSection
                 socials={
-                  cvData.personal.socials
+                  personal.socials ||
+                  []
                 }
 />
             </Sidebar>
@@ -118,7 +118,7 @@ export default function ModernGlass({
                 name={personal.name}
                 title={personal.title}
                 summary={personal.summary}
-                vendors={cvData.vendors}
+                vendors={vendors}
                 darkMode={darkMode}
                 setDarkMode={
                   setDarkMode

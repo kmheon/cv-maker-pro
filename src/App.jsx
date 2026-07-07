@@ -6,6 +6,12 @@ import templates from './templates'
 
 import cvDataFile from './data/cvData'
 
+import { useTheme } from './context/ThemeContext'
+
+import WhatsNewModal, {
+  useWhatsNew,
+} from './shared/WhatsNewModal'
+
 
 export default function App() {
   /* =========================
@@ -19,17 +25,31 @@ export default function App() {
           'cv-data'
         )
 
-      return saved
-        ? JSON.parse(saved)
-        : cvDataFile
+      if (!saved) return cvDataFile
+
+      try {
+        return JSON.parse(saved)
+      } catch {
+        return cvDataFile
+      }
     })
 
   /* =========================
      DARK MODE
   ========================= */
 
-  const [darkMode, setDarkMode] =
-    useState(false)
+  const { darkMode, setDarkMode } =
+    useTheme()
+
+  /* =========================
+     WHAT'S NEW
+  ========================= */
+
+  const {
+    open: whatsNewOpen,
+    close: closeWhatsNew,
+    openManually: showWhatsNew,
+  } = useWhatsNew()
 
   /* =========================
      TEMPLATE
@@ -167,6 +187,36 @@ export default function App() {
       </button>
 
       {/* =========================
+          WHAT'S NEW BUTTON
+      ========================= */}
+
+      <button
+        onClick={showWhatsNew}
+        title="What's New"
+        className="
+          fixed
+          top-6
+          left-[172px]
+          z-[100]
+          w-12
+          h-12
+          rounded-2xl
+          bg-white
+          text-xl
+          shadow-2xl
+          hover:scale-105
+          transition-all
+        "
+      >
+        🔔
+      </button>
+
+      <WhatsNewModal
+        open={whatsNewOpen}
+        onClose={closeWhatsNew}
+      />
+
+      {/* =========================
           OVERLAY
       ========================= */}
 
@@ -213,6 +263,7 @@ export default function App() {
           <EditorPanel
             cvData={cvData}
             setCvData={setCvData}
+            darkMode={darkMode}
 
             selectedTemplate={
               selectedTemplate

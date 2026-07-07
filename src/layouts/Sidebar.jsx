@@ -4,7 +4,6 @@ export default function Sidebar({
   photoPositionX = 50,
   photoPositionY = 50,
   personal,
-  darkMode,
 }) {
   return (
     <aside

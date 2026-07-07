@@ -2,7 +2,7 @@ import {
   exportPdf,
 } from '../utils/exportPdf'
 
-import Tag from '../shared/Tag'
+import VendorChip from '../cards/VendorChip'
 
 export default function HeroSection({
   name,
@@ -331,19 +331,16 @@ export default function HeroSection({
                 gap-3
               "
             >
-              {vendors.map(
+              {(vendors || []).map(
                 (
                   vendor,
                   index
                 ) => (
-                  <Tag
+                  <VendorChip
                     key={index}
-                    darkMode={
-                      darkMode
-                    }
                   >
                     {vendor}
-                  </Tag>
+                  </VendorChip>
                 )
               )}
             </div>

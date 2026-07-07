@@ -1,6 +1,5 @@
 export default function SkillsSection({
   skills,
-  darkMode,
 }) {
   return (
     <section
