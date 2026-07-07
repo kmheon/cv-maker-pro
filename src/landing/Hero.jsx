@@ -1,6 +1,9 @@
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import templates from "../templates";
+import cvData from "../data/cvData";
 
 export default function Hero() {
+    const PreviewTemplate = templates.modernGlass.component;
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-100">
 
@@ -124,29 +127,26 @@ export default function Hero() {
 
             </div>
 
-            <div className="aspect-[210/297] overflow-hidden rounded-2xl border bg-slate-100">
+            <div className="aspect-[210/297] overflow-hidden rounded-2xl border bg-white">
 
-              <div className="flex h-full items-center justify-center text-center text-slate-400">
+  <div
+    className="
+      origin-top
+      scale-[0.34]
+      lg:scale-[0.38]
+      w-[820px]
+      pointer-events-none
+      select-none
+    "
+  >
+    <PreviewTemplate
+      cvData={cvData}
+      darkMode={false}
+      setDarkMode={() => {}}
+    />
+  </div>
 
-                <div>
-
-                  <div className="text-6xl">
-                    📄
-                  </div>
-
-                  <p className="mt-4 font-semibold">
-                    Live Resume Preview
-                  </p>
-
-                  <p className="text-sm">
-                    (Real template coming next)
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
+</div>
 
           </div>
 
