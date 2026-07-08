@@ -1,12 +1,37 @@
-// src/landing/TemplateShowcase.jsx
 import React, { useState } from "react";
 import templates, { templateList } from "../templates";
 import cvData from "../data/cvData";
 
 export default function TemplateShowcase() {
-  const list = templateList || Object.keys(templates);
+  // Ensure we safely map over unique string IDs, fallback to Object.keys if list isn't array of strings
+  const list = Array.isArray(templateList) 
+    ? templateList.map(item => typeof item === 'object' ? item.id : item)
+    : Object.keys(templates);
+    
   const [selected, setSelected] = useState(list[0] || "");
   const ActiveTemplate = templates[selected]?.component;
+
+  // Comprehensive fail-safe data architecture matching standard template expectations
+  const normalizedCvData = {
+    personal: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      title: "",
+      summary: "",
+      location: "",
+      website: "",
+      ...cvData?.personal
+    },
+    experience: cvData?.experience || [],
+    education: cvData?.education || [],
+    skills: cvData?.skills || [],
+    languages: cvData?.languages || [],
+    projects: cvData?.projects || [],
+    certifications: cvData?.certifications || [],
+    ...cvData
+  };
 
   return (
     <section id="templates" className="max-w-7xl mx-auto px-6 py-20 border-t border-slate-200/60 relative">
@@ -22,26 +47,31 @@ export default function TemplateShowcase() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-2.5 mb-12 max-w-4xl mx-auto relative z-10">
-        {list.map((key) => (
-          <button
-            key={key}
-            onClick={() => setSelected(key)}
-            className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 active:scale-95 ${
-              selected === key
-                ? "bg-slate-900 text-white shadow-md shadow-slate-900/10"
-                : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 shadow-sm"
-            }`}
-          >
-            {templates[key]?.name || key}
-          </button>
-        ))}
+        {list.map((key) => {
+          const stringKey = typeof key === 'string' ? key : key?.id;
+          if (!stringKey) return null;
+          
+          return (
+            <button
+              key={stringKey}
+              onClick={() => setSelected(stringKey)}
+              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 active:scale-95 ${
+                selected === stringKey
+                  ? "bg-slate-900 text-white shadow-md shadow-slate-900/10"
+                  : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 shadow-sm"
+              }`}
+            >
+              {templates[stringKey]?.name || stringKey}
+            </button>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto relative z-10">
         <div className="lg:col-span-8 bg-white border border-slate-200 shadow-2xl shadow-slate-100 rounded-[32px] p-3 aspect-[1/1.414] overflow-hidden group transition-all duration-300 hover:border-slate-300/80">
           <div className="w-full h-full rounded-[20px] bg-white overflow-y-auto p-10 border border-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
             {ActiveTemplate ? (
-              <ActiveTemplate cvData={cvData} />
+              <ActiveTemplate cvData={normalizedCvData} />
             ) : (
               <div className="flex items-center justify-center h-full text-slate-400 font-medium">
                 Template engine rendering framework error.
