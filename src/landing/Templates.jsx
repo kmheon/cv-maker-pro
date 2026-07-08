@@ -65,9 +65,11 @@ export default function Templates() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto relative z-10">
-        <div className="lg:col-span-8 bg-white border border-slate-200 shadow-2xl shadow-slate-100 rounded-[32px] p-3 aspect-[1/1.414] overflow-hidden group transition-all duration-300 hover:border-slate-300/80">
-          <div className="w-full h-full rounded-[20px] bg-white overflow-y-auto p-10 border border-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
+      {/* Grid container widened by removing inner max-w constraint and adjusting column spans */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start w-full relative z-10">
+        <div className="lg:col-span-8 xl:col-span-9 bg-white border border-slate-200 shadow-2xl shadow-slate-100 rounded-[32px] p-2 md:p-3 aspect-[1/1.414] overflow-hidden group transition-all duration-300 hover:border-slate-300/80">
+          {/* Reduced internal padding to allow CV content more horizontal breathing room */}
+          <div className="w-full h-full rounded-[20px] bg-white overflow-y-auto p-4 md:p-6 lg:p-8 border border-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
             {ActiveTemplate ? (
               <ActiveTemplate cvData={safeData} />
             ) : (
@@ -78,7 +80,7 @@ export default function Templates() {
           </div>
         </div>
 
-        <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 bg-[#faf9f6]/60 backdrop-blur-md border border-slate-200/80 rounded-[28px] p-8 shadow-xl shadow-slate-100/50">
+        <div className="lg:col-span-4 xl:col-span-3 space-y-6 lg:sticky lg:top-24 bg-[#faf9f6]/60 backdrop-blur-md border border-slate-200/80 rounded-[28px] p-6 lg:p-8 shadow-xl shadow-slate-100/50">
           <div className="space-y-1">
             <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 bg-orange-500/10 px-2.5 py-1 rounded-md">
               {templates[selected]?.category || "Professional"}
