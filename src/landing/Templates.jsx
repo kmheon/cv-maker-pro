@@ -34,7 +34,7 @@ export default function Templates() {
   const ActiveTemplate = templates[selected]?.component;
 
   return (
-    <section id="templates" className="max-w-7xl mx-auto px-6 py-20 border-t border-slate-200/60 relative">
+    <section id="templates" className="max-w-7xl mx-auto px-6 py-24 border-t border-slate-200/60 relative">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-gradient-to-tr from-blue-500/5 to-orange-500/5 blur-3xl pointer-events-none" />
 
       <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 relative z-10">
@@ -46,7 +46,7 @@ export default function Templates() {
         </p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-2.5 mb-12 max-w-4xl mx-auto relative z-10">
+      <div className="flex flex-wrap justify-center gap-2.5 mb-14 max-w-4xl mx-auto relative z-10">
         {list.map((key) => {
           if (!key) return null;
           return (
@@ -65,22 +65,26 @@ export default function Templates() {
         })}
       </div>
 
-      {/* Grid container widened by removing inner max-w constraint and adjusting column spans */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start w-full relative z-10">
-        <div className="lg:col-span-8 xl:col-span-9 bg-white border border-slate-200 shadow-2xl shadow-slate-100 rounded-[32px] p-2 md:p-3 aspect-[1/1.414] overflow-hidden group transition-all duration-300 hover:border-slate-300/80">
-          {/* Reduced internal padding to allow CV content more horizontal breathing room */}
-          <div className="w-full h-full rounded-[20px] bg-white overflow-y-auto p-4 md:p-6 lg:p-8 border border-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
-            {ActiveTemplate ? (
-              <ActiveTemplate cvData={safeData} />
-            ) : (
-              <div className="flex items-center justify-center h-full text-slate-400 font-medium">
-                Template engine rendering framework error.
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start w-full max-w-7xl mx-auto relative z-10">
+        <div className="lg:col-span-8 bg-white border border-slate-200/80 shadow-2xl shadow-slate-200/50 rounded-[32px] p-3 transition-all duration-300 hover:border-slate-300/80">
+          {/* Fixed-height container with hidden overflow, inner content scrolls and scales */}
+          <div className="relative w-full h-[450px] md:h-[600px] rounded-[24px] bg-slate-50 overflow-hidden border border-slate-100 shadow-inner group">
+            <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-200/80 group-hover:scrollbar-thumb-slate-300 flex justify-center py-6 md:py-10">
+              {/* Scaled fixed-width canvas to ensure CV layout never gets squeezed horizontally */}
+              <div className="w-[850px] shrink-0 origin-top transform scale-[0.35] xs:scale-[0.45] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-90 transition-transform duration-300">
+                {ActiveTemplate ? (
+                  <ActiveTemplate cvData={safeData} />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-slate-400 font-medium">
+                    Template engine rendering framework error.
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
 
-        <div className="lg:col-span-4 xl:col-span-3 space-y-6 lg:sticky lg:top-24 bg-[#faf9f6]/60 backdrop-blur-md border border-slate-200/80 rounded-[28px] p-6 lg:p-8 shadow-xl shadow-slate-100/50">
+        <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-28 bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[32px] p-8 shadow-xl shadow-slate-100/60">
           <div className="space-y-1">
             <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 bg-orange-500/10 px-2.5 py-1 rounded-md">
               {templates[selected]?.category || "Professional"}
@@ -95,9 +99,9 @@ export default function Templates() {
               "A pristine typography-driven structure engineered with flawless data visual hierarchy, tailored specifically for strict corporate tracking parsing metrics."}
           </p>
 
-          <hr className="border-slate-200" />
+          <hr className="border-slate-200/80" />
 
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             <div className="flex items-center gap-3 text-sm text-slate-600">
               <span className="w-2 h-2 rounded-full bg-orange-500" />
               {templates[selected]?.darkSupported ? "Full Dark Mode Support" : "Light Mode Optimization"}
@@ -112,7 +116,7 @@ export default function Templates() {
             </div>
           </div>
 
-          <button className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-2xl transition-all shadow-lg shadow-orange-500/20 active:scale-98 text-center text-sm tracking-wide mt-2">
+          <button className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-2xl transition-all shadow-lg shadow-orange-500/20 active:scale-98 text-center text-sm tracking-wide mt-4">
             Use This Template
           </button>
         </div>

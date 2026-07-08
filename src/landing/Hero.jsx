@@ -2,6 +2,28 @@ import { ArrowRight, CheckCircle2, Sparkles, ShieldCheck, FileDown } from "lucid
 import templates from "../templates";
 import cvData from "../data/cvData";
 
+// Strict fallback data structure to guarantee compliance with all template rendering requirements
+const safeData = {
+  personal: {
+    firstName: "Alex",
+    lastName: "Carter",
+    email: "alex@example.com",
+    phone: "+1 234 567 890",
+    title: "Professional",
+    summary: "Dedicated professional with a proven track record.",
+    location: "New York, NY",
+    website: "alexcarter.design",
+    ...cvData?.personal
+  },
+  experience: cvData?.experience || [],
+  education: cvData?.education || [],
+  skills: cvData?.skills || [],
+  languages: cvData?.languages || [],
+  projects: cvData?.projects || [],
+  certifications: cvData?.certifications || [],
+  ...cvData
+};
+
 export default function Hero() {
   const PreviewTemplate = templates.modernGlass.component;
 
@@ -143,8 +165,8 @@ export default function Hero() {
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-inner">
-              <div className="aspect-[210/297] overflow-hidden bg-slate-100">
-                <div className="relative h-full w-full overflow-hidden">
+              <div className="aspect-[210/297] overflow-hidden bg-slate-100 flex justify-center">
+                <div className="relative h-full w-full">
                   <div
                     className="
                       absolute
@@ -152,14 +174,18 @@ export default function Hero() {
                       top-0
                       origin-top
                       -translate-x-1/2
+                      w-[850px]
                       scale-[0.32]
-                      lg:scale-[0.34]
+                      sm:scale-[0.40]
+                      md:scale-[0.45]
+                      lg:scale-[0.48]
+                      xl:scale-[0.52]
                       pointer-events-none
                       select-none
                     "
                   >
                     <PreviewTemplate
-                      cvData={cvData}
+                      cvData={safeData}
                       darkMode={false}
                       setDarkMode={() => {}}
                     />
