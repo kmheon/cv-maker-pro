@@ -4,14 +4,47 @@ import { Menu, X } from "lucide-react";
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
+  // Handle scroll spy and header background with passive event listener for performance
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
+
+      // Lightweight scroll spy
+      const sections = ['templates', 'about'];
+      let current = '';
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && window.scrollY >= (element.offsetTop - window.innerHeight / 3)) {
+          current = section;
+        }
+      }
+      setActiveSection(current);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Handle mobile menu accessibility (Escape key) and UX (Body scroll lock)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setIsMobileOpen(false);
+    };
+
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileOpen]);
 
   return (
     <nav
@@ -34,10 +67,20 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#templates" className="text-sm font-medium text-slate-600 transition-colors duration-200 hover:text-orange-600">
+          <a 
+            href="#templates" 
+            className={`text-sm font-medium transition-colors duration-200 hover:text-orange-600 ${
+              activeSection === 'templates' ? 'text-orange-600' : 'text-slate-600'
+            }`}
+          >
             Templates
           </a>
-          <a href="#about" className="text-sm font-medium text-slate-600 transition-colors duration-200 hover:text-orange-600">
+          <a 
+            href="#about" 
+            className={`text-sm font-medium transition-colors duration-200 hover:text-orange-600 ${
+              activeSection === 'about' ? 'text-orange-600' : 'text-slate-600'
+            }`}
+          >
             Our Philosophy
           </a>
         </div>
@@ -52,8 +95,10 @@ export default function Navbar() {
           </a>
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
+            aria-expanded={isMobileOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMobileOpen ? "Close menu" : "Open menu"}
             className="flex items-center justify-center rounded-lg p-2 text-slate-600 hover:bg-slate-100 transition-colors md:hidden"
-            aria-label="Toggle Menu"
           >
             {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -62,18 +107,25 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileOpen && (
-        <div className="absolute left-0 right-0 top-16 border-b border-slate-200/60 bg-white/95 px-6 py-6 shadow-xl backdrop-blur-xl transition-all md:hidden flex flex-col gap-5">
+        <div 
+          id="mobile-menu"
+          className="absolute left-0 right-0 top-16 border-b border-slate-200/60 bg-white/95 px-6 py-6 shadow-xl backdrop-blur-xl transition-all md:hidden flex flex-col gap-5"
+        >
           <a
             href="#templates"
             onClick={() => setIsMobileOpen(false)}
-            className="text-base font-semibold text-slate-700 transition-colors hover:text-orange-600"
+            className={`text-base font-semibold transition-colors hover:text-orange-600 ${
+              activeSection === 'templates' ? 'text-orange-600' : 'text-slate-700'
+            }`}
           >
             Templates
           </a>
           <a
             href="#about"
             onClick={() => setIsMobileOpen(false)}
-            className="text-base font-semibold text-slate-700 transition-colors hover:text-orange-600"
+            className={`text-base font-semibold transition-colors hover:text-orange-600 ${
+              activeSection === 'about' ? 'text-orange-600' : 'text-slate-700'
+            }`}
           >
             Our Philosophy
           </a>
